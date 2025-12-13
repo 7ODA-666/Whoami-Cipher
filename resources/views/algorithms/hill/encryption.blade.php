@@ -1,0 +1,233 @@
+@extends('layouts.master')
+
+@section('title', 'Hill Cipher - Encryption | CipherViz')
+@section('page-title', 'Hill Cipher')
+
+@section('content')
+<!-- Tabs -->
+<div class="flex gap-3 mb-6 lg:mb-8 overflow-x-auto">
+    <a href="{{ route('hill.encryption') }}"
+       class="tab px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg active-tab border-2 border-transparent ml-2 mt-2 mb-2">
+        Encryption
+    </a>
+    <a href="{{ route('hill.decryption') }}"
+       class="tab px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white border-2 border-gray-600 mt-2 mb-2">
+        Decryption
+    </a>
+    <a href="{{ route('hill.about') }}"
+       class="tab px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white border-2 border-gray-600 mt-2 mb-2">
+        About
+    </a>
+</div>
+
+<!-- Visualization Section -->
+<div class="bg-gray-800 border border-gray-700 rounded-xl p-6 mb-8 shadow-xl">
+    <div class="flex items-center justify-between mb-4">
+        <label class="flex items-center gap-3 cursor-pointer">
+            <div class="switch">
+                <input type="checkbox" class="viz-toggle" checked />
+                <span class="slider bg-gray-600"></span>
+            </div>
+            <span class="text-gray-200 font-semibold">Show Visualization</span>
+        </label>
+    </div>
+    <div class="visualization-content min-h-[200px] p-4 bg-gray-900 rounded-lg border border-gray-700"></div>
+</div>
+
+<!-- Tool Section -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mb-6 lg:mb-8">
+    <div class="bg-gray-800 border border-gray-700 rounded-xl p-4 lg:p-6 shadow-xl">
+        <label for="input-text" class="block mb-2 text-gray-200 font-semibold">Plaintext</label>
+        <textarea
+            id="input-text"
+            class="w-full p-3 lg:p-4 bg-gray-900 border border-gray-700 rounded-lg text-gray-100 font-mono resize-y focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm lg:text-base"
+            placeholder="Enter plaintext (letters only)"
+            rows="6"
+        ></textarea>
+
+        <!-- Matrix Key Section -->
+        <div class="matrix-key-section mt-6">
+            <label class="block mb-3 text-gray-200 font-semibold">Key Matrix</label>
+
+            <!-- Top Row: Size Select + Generate Button -->
+            <div class="flex gap-3 mb-4">
+                <select id="hill-matrix-size"
+                        class="flex-1 px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm font-semibold cursor-pointer hover:border-gray-600 transition-colors">
+                    <option value="2">2 × 2</option>
+                    <option value="3">3 × 3</option>
+                </select>
+
+                <button
+                    onclick="generateHillKey()"
+                    class="px-6 py-2 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-xl flex items-center gap-2 whitespace-nowrap"
+                    title="Generate a random valid Hill Cipher key matrix"
+                >
+                    <i class="fas fa-dice"></i>
+                    <span>Generate</span>
+                </button>
+            </div>
+
+            <!-- Matrix Input Container -->
+            <div class="bg-gray-900/50 border border-gray-700 rounded-lg p-4">
+                <div class="text-center mb-3">
+                    <span class="text-gray-400 text-sm">Matrix Values (0-25)</span>
+                </div>
+                <div id="matrix-input-container" class="matrix-grid size-2"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-gray-800 border border-gray-700 rounded-xl p-4 lg:p-6 shadow-xl">
+        <label for="output-text" class="block mb-2 text-gray-200 font-semibold">Ciphertext</label>
+        <textarea
+            id="output-text"
+            readonly
+            class="w-full p-3 lg:p-4 bg-gray-900 border border-gray-700 rounded-lg text-gray-100 font-mono resize-y cursor-not-allowed opacity-75 text-sm lg:text-base"
+            rows="6"
+        ></textarea>
+        <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-4">
+            <button
+                onclick="executeEncrypt()"
+                class="flex-1 px-4 sm:px-6 py-2 sm:py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-xl text-sm sm:text-base"
+            >
+                Encrypt
+            </button>
+            <button
+                class="copy-btn px-4 sm:px-6 py-2 sm:py-3 bg-gray-700 hover:bg-gray-600 text-gray-200 font-semibold rounded-lg transition-colors border border-gray-600 text-sm sm:text-base"
+            >
+                Copy
+            </button>
+            <button
+                class="clear-btn px-4 sm:px-6 py-2 sm:py-3 bg-gray-700 hover:bg-gray-600 text-gray-200 font-semibold rounded-lg transition-colors border border-gray-600 text-sm sm:text-base"
+            >
+                Clear
+            </button>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script src="{{ asset('js/crypto-ajax.js') }}"></script>
+<script>
+function initHillMatrix(sizeSelectId, containerId) {
+    const sizeSelect = document.getElementById(sizeSelectId);
+    const container = document.getElementById(containerId);
+
+    if (!sizeSelect || !container) return;
+
+    function createMatrixInputs(size) {
+        container.className = `matrix-grid size-${size}`;
+        container.innerHTML = '';
+
+        for (let i = 0; i < size; i++) {
+            for (let j = 0; j < size; j++) {
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.min = '0';
+                input.max = '25';
+                input.value = '0';
+                input.className = 'matrix-cell';
+                input.placeholder = '0';
+                input.setAttribute('data-row', i);
+                input.setAttribute('data-col', j);
+
+                // Add input validation
+                input.addEventListener('input', function() {
+                    let val = parseInt(this.value);
+                    if (isNaN(val) || val < 0) {
+                        this.value = '0';
+                    } else if (val > 25) {
+                        this.value = '25';
+                    }
+                });
+
+                container.appendChild(input);
+            }
+        }
+    }
+
+    sizeSelect.addEventListener('change', () => {
+        createMatrixInputs(parseInt(sizeSelect.value));
+    });
+
+    createMatrixInputs(parseInt(sizeSelect.value));
+}
+
+initHillMatrix('hill-matrix-size', 'matrix-input-container');
+
+function generateHillKey() {
+    const size = parseInt(document.getElementById('hill-matrix-size').value);
+    const container = document.getElementById('matrix-input-container');
+    const inputs = container.querySelectorAll('input');
+    const button = event.target.closest('button');
+
+    // Disable button and show loading state
+    button.disabled = true;
+    button.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Generating...</span>';
+
+    // Disable all inputs
+    inputs.forEach(input => {
+        input.disabled = true;
+        input.classList.add('opacity-50', 'cursor-not-allowed');
+    });
+
+    fetch('{{ route("hill.generate.key") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        },
+        body: JSON.stringify({ size: size })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            const values = data.key.split(' ').map(v => parseInt(v.trim()));
+            inputs.forEach((input, index) => {
+                if (index < values.length) {
+                    input.value = values[index];
+                    // Add success animation
+                    input.style.transition = 'all 0.3s ease';
+                    input.style.borderColor = 'rgb(34, 197, 94)';
+                    input.style.boxShadow = '0 0 0 3px rgba(34, 197, 94, 0.2)';
+
+                    setTimeout(() => {
+                        input.style.borderColor = '';
+                        input.style.boxShadow = '';
+                    }, 1500);
+                }
+            });
+        } else {
+            alert('Error generating key: ' + (data.error || 'Unknown error'));
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to generate key. Please try again.');
+    })
+    .finally(() => {
+        // Re-enable button with original content
+        button.disabled = false;
+        button.innerHTML = '<i class="fas fa-dice"></i><span>Generate</span>';
+
+        // Re-enable inputs
+        inputs.forEach(input => {
+            input.disabled = false;
+            input.classList.remove('opacity-50', 'cursor-not-allowed');
+        });
+    });
+}
+
+function executeEncrypt() {
+    const inputField = document.getElementById('input-text');
+    const keyField = document.createElement('input');
+    const outputField = document.getElementById('output-text');
+    const vizContent = document.querySelector('.visualization-content');
+    const size = parseInt(document.getElementById('hill-matrix-size').value);
+
+    executeCryptoAjax('hill', 'encrypt', inputField, keyField, outputField, vizContent, { size: size });
+}
+</script>
+@endpush
+@endsection
+
