@@ -32,14 +32,39 @@ class CaesarController extends Controller
 
     public function processEncrypt(Request $request)
     {
-        $request->validate([
+        // Custom validation with specific error messages
+        $validator = \Validator::make($request->all(), [
             'text' => 'required|string',
-            'key' => 'required|integer|min:1|max:25'
+            'key' => 'required|numeric|integer|min:1|max:25'
+        ], [
+            'key.required' => 'Shift key is required.',
+            'key.numeric' => 'Shift must be a valid integer.',
+            'key.integer' => 'Shift must be a valid integer.',
+            'key.min' => 'Shift must be between 1 and 25.',
+            'key.max' => 'Shift must not exceed 25.',
+            'text.required' => 'Text to encrypt is required.'
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'error' => $validator->errors()->first()
+            ], 422);
+        }
+
         try {
-            $result = $this->cipherService->encrypt($request->text, (int) $request->key);
-            $steps = $this->cipherService->getVisualizationSteps($request->text, (int) $request->key, 'encrypt');
+            $key = (int) $request->key;
+
+            // Additional validation for edge cases
+            if ($key <= 0) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Shift must be a positive number.'
+                ], 422);
+            }
+
+            $result = $this->cipherService->encrypt($request->text, $key);
+            $steps = $this->cipherService->getVisualizationSteps($request->text, $key, 'encrypt');
 
             return response()->json([
                 'success' => true,
@@ -56,14 +81,39 @@ class CaesarController extends Controller
 
     public function processDecrypt(Request $request)
     {
-        $request->validate([
+        // Custom validation with specific error messages
+        $validator = \Validator::make($request->all(), [
             'text' => 'required|string',
-            'key' => 'required|integer|min:1|max:25'
+            'key' => 'required|numeric|integer|min:1|max:25'
+        ], [
+            'key.required' => 'Shift key is required.',
+            'key.numeric' => 'Shift must be a valid integer.',
+            'key.integer' => 'Shift must be a valid integer.',
+            'key.min' => 'Shift must be between 1 and 25.',
+            'key.max' => 'Shift must not exceed 25.',
+            'text.required' => 'Text to decrypt is required.'
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'error' => $validator->errors()->first()
+            ], 422);
+        }
+
         try {
-            $result = $this->cipherService->decrypt($request->text, (int) $request->key);
-            $steps = $this->cipherService->getVisualizationSteps($request->text, (int) $request->key, 'decrypt');
+            $key = (int) $request->key;
+
+            // Additional validation for edge cases
+            if ($key <= 0) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Shift must be a positive number.'
+                ], 422);
+            }
+
+            $result = $this->cipherService->decrypt($request->text, $key);
+            $steps = $this->cipherService->getVisualizationSteps($request->text, $key, 'decrypt');
 
             return response()->json([
                 'success' => true,

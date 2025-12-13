@@ -32,14 +32,49 @@ class RailFenceController extends Controller
 
     public function processEncrypt(Request $request)
     {
-        $request->validate([
+        // Custom validation with specific error messages
+        $validator = \Validator::make($request->all(), [
             'text' => 'required|string',
-            'key' => 'required|integer|min:2|max:10'
+            'key' => 'required|numeric|integer|min:2|max:10'
+        ], [
+            'text.required' => 'Text to encrypt is required.',
+            'key.required' => 'Number of rails is required.',
+            'key.numeric' => 'Number of rails must be a valid integer.',
+            'key.integer' => 'Number of rails must be a valid integer.',
+            'key.min' => 'Number of rails must be at least 2.',
+            'key.max' => 'Number of rails must not exceed 10.'
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'error' => $validator->errors()->first()
+            ], 422);
+        }
+
+        // Additional validation
+        $key = (int) $request->key;
+        $text = trim($request->text);
+
+        // Check if text is empty after trimming
+        if (empty($text)) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Text cannot be empty.'
+            ], 422);
+        }
+
+        // Check if number of rails is not greater than text length
+        if ($key > strlen($text)) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Number of rails cannot exceed the length of the text.'
+            ], 422);
+        }
+
         try {
-            $result = $this->cipherService->encrypt($request->text, (int) $request->key);
-            $steps = $this->cipherService->getVisualizationSteps($request->text, (int) $request->key, 'encrypt');
+            $result = $this->cipherService->encrypt($text, $key);
+            $steps = $this->cipherService->getVisualizationSteps($text, $key, 'encrypt');
 
             return response()->json([
                 'success' => true,
@@ -56,14 +91,49 @@ class RailFenceController extends Controller
 
     public function processDecrypt(Request $request)
     {
-        $request->validate([
+        // Custom validation with specific error messages
+        $validator = \Validator::make($request->all(), [
             'text' => 'required|string',
-            'key' => 'required|integer|min:2|max:10'
+            'key' => 'required|numeric|integer|min:2|max:10'
+        ], [
+            'text.required' => 'Text to decrypt is required.',
+            'key.required' => 'Number of rails is required.',
+            'key.numeric' => 'Number of rails must be a valid integer.',
+            'key.integer' => 'Number of rails must be a valid integer.',
+            'key.min' => 'Number of rails must be at least 2.',
+            'key.max' => 'Number of rails must not exceed 10.'
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'error' => $validator->errors()->first()
+            ], 422);
+        }
+
+        // Additional validation
+        $key = (int) $request->key;
+        $text = trim($request->text);
+
+        // Check if text is empty after trimming
+        if (empty($text)) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Text cannot be empty.'
+            ], 422);
+        }
+
+        // Check if number of rails is not greater than text length
+        if ($key > strlen($text)) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Number of rails cannot exceed the length of the text.'
+            ], 422);
+        }
+
         try {
-            $result = $this->cipherService->decrypt($request->text, (int) $request->key);
-            $steps = $this->cipherService->getVisualizationSteps($request->text, (int) $request->key, 'decrypt');
+            $result = $this->cipherService->decrypt($text, $key);
+            $steps = $this->cipherService->getVisualizationSteps($text, $key, 'decrypt');
 
             return response()->json([
                 'success' => true,

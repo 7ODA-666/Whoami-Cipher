@@ -351,15 +351,24 @@ input:checked + .slider:before {
   justify-content: center;
 }
 
-.matrix-grid.size-2 {
+.matrix-grid.size2 {
   grid-template-columns: repeat(2, 1fr);
+  width: 0.5rem;
   max-width: 200px;
 }
 
-.matrix-grid.size-3 {
+.matrix-grid.size3 {
   grid-template-columns: repeat(3, 1fr);
+    width: 0.5rem;
   max-width: 280px;
 }
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
 
 .matrix-grid input,
 .matrix-cell {

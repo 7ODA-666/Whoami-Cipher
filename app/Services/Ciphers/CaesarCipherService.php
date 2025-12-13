@@ -21,8 +21,12 @@ class CaesarCipherService
             return '';
         }
 
-        if ($shift < 1 || $shift > 25) {
-            throw new \InvalidArgumentException('Shift must be between 1 and 25');
+        if ($shift < 1) {
+            throw new \InvalidArgumentException('Shift must be a positive number.');
+        }
+
+        if ($shift > 25) {
+            throw new \InvalidArgumentException('Shift must not exceed 25.');
         }
 
         return $this->transform($plaintext, $shift);
@@ -34,8 +38,12 @@ class CaesarCipherService
             return '';
         }
 
-        if ($shift < 1 || $shift > 25) {
-            throw new \InvalidArgumentException('Shift must be between 1 and 25');
+        if ($shift < 1) {
+            throw new \InvalidArgumentException('Shift must be a positive number.');
+        }
+
+        if ($shift > 25) {
+            throw new \InvalidArgumentException('Shift must not exceed 25.');
         }
 
         return $this->transform($ciphertext, -$shift);
@@ -98,7 +106,7 @@ class CaesarCipherService
                 $result .= $newChar;
 
                 $steps[] = [
-                    'html' => '<p>Character ' . ($index + 1) . ': "' . $char . '" (position ' . $code . ') ' . 
+                    'html' => '<p>Character ' . ($index + 1) . ': "' . $char . '" (position ' . $code . ') ' .
                              ($isEncrypt ? '+' : '-') . ' ' . abs($shift) . ' = ' . $shifted . ' (mod 26) → "' . $newChar . '"</p>',
                     'delay' => 800
                 ];

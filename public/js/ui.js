@@ -353,20 +353,73 @@ function initClearButtons() {
 
   clearButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      const container = btn.closest('[id$="-tab"]');
+      // Find the appropriate container - try multiple approaches
+      let container = btn.closest('[id$="-tab"]'); // Old approach for backward compatibility
+
+      if (!container) {
+        // New approach: find container at the document level for algorithm pages
+        container = document.querySelector('#main-content') || document.body;
+      }
+
       if (container) {
+        // Clear all input fields (text, number, password, etc.)
         const inputs = container.querySelectorAll('input, textarea');
         inputs.forEach(input => {
-          if (input.type !== 'checkbox' && !input.disabled && !input.readOnly) {
+          if (input.type !== 'checkbox' &&
+              input.type !== 'radio' &&
+              !input.disabled &&
+              !input.readOnly &&
+              !input.classList.contains('viz-toggle')) {
             input.value = '';
           }
         });
 
-        // Clear visualization
-        const vizContent = container.querySelector('.visualization-content');
-        if (vizContent) {
+        // Reset all select elements to their first option
+        const selects = container.querySelectorAll('select');
+        selects.forEach(select => {
+          if (!select.disabled) {
+            select.selectedIndex = 0;
+            // Trigger change event in case other scripts depend on it
+            select.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        });
+
+        // Clear visualization content completely
+        const vizContents = container.querySelectorAll('.visualization-content');
+        vizContents.forEach(vizContent => {
           vizContent.innerHTML = '';
-        }
+          // Remove any dynamic classes that might have been added
+          vizContent.className = 'visualization-content min-h-[200px] p-4 bg-gray-900 rounded-lg border border-gray-700';
+        });
+
+        // Clear any dynamically generated matrix input containers (for Hill cipher)
+        const matrixContainers = container.querySelectorAll('[id*="matrix-input-container"]');
+        matrixContainers.forEach(matrixContainer => {
+          matrixContainer.innerHTML = '';
+        });
+
+        // Reset any error messages or success notifications
+        const errorElements = container.querySelectorAll('.error-message, .success-message, .alert');
+        errorElements.forEach(el => {
+          el.remove();
+        });
+
+        // Remove any fixed position notifications (error, success, etc.)
+        const notifications = document.querySelectorAll('.error-notification, .success-notification, .notification');
+        notifications.forEach(notification => {
+          notification.remove();
+        });
+
+        // Clear any temporary state or data attributes
+        const elementsWithData = container.querySelectorAll('[data-temp], [data-step], [data-animation]');
+        elementsWithData.forEach(el => {
+          // Remove temporary data attributes
+          Object.keys(el.dataset).forEach(key => {
+            if (key.startsWith('temp') || key.startsWith('step') || key.startsWith('animation')) {
+              delete el.dataset[key];
+            }
+          });
+        });
       }
     });
   });

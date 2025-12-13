@@ -32,14 +32,53 @@ class PlayfairController extends Controller
 
     public function processEncrypt(Request $request)
     {
-        $request->validate([
+        // Custom validation with specific error messages
+        $validator = \Validator::make($request->all(), [
             'text' => 'required|string',
-            'key' => 'required|string|regex:/^[A-Za-z]+$/'
+            'key' => 'required|string'
+        ], [
+            'text.required' => 'Text to encrypt is required.',
+            'key.required' => 'Key is required.',
+            'key.string' => 'Key must be a valid string.'
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'error' => $validator->errors()->first()
+            ], 422);
+        }
+
+        // Additional key validation
+        $key = trim($request->key);
+
+        // Check if key is empty after trimming
+        if (empty($key)) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Key cannot be empty.'
+            ], 422);
+        }
+
+        // Check if key contains only alphabetic characters
+        if (!preg_match('/^[A-Za-z]+$/', $key)) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Key must contain only alphabetic characters.'
+            ], 422);
+        }
+
+        // Check minimum key length
+        if (strlen($key) < 2) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Key must be at least 2 characters long.'
+            ], 422);
+        }
+
         try {
-            $result = $this->cipherService->encrypt($request->text, $request->key);
-            $steps = $this->cipherService->getVisualizationSteps($request->text, $request->key, 'encrypt');
+            $result = $this->cipherService->encrypt($request->text, $key);
+            $steps = $this->cipherService->getVisualizationSteps($request->text, $key, 'encrypt');
 
             return response()->json([
                 'success' => true,
@@ -56,14 +95,53 @@ class PlayfairController extends Controller
 
     public function processDecrypt(Request $request)
     {
-        $request->validate([
+        // Custom validation with specific error messages
+        $validator = \Validator::make($request->all(), [
             'text' => 'required|string',
-            'key' => 'required|string|regex:/^[A-Za-z]+$/'
+            'key' => 'required|string'
+        ], [
+            'text.required' => 'Text to decrypt is required.',
+            'key.required' => 'Key is required.',
+            'key.string' => 'Key must be a valid string.'
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'error' => $validator->errors()->first()
+            ], 422);
+        }
+
+        // Additional key validation
+        $key = trim($request->key);
+
+        // Check if key is empty after trimming
+        if (empty($key)) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Key cannot be empty.'
+            ], 422);
+        }
+
+        // Check if key contains only alphabetic characters
+        if (!preg_match('/^[A-Za-z]+$/', $key)) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Key must contain only alphabetic characters.'
+            ], 422);
+        }
+
+        // Check minimum key length
+        if (strlen($key) < 2) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Key must be at least 2 characters long.'
+            ], 422);
+        }
+
         try {
-            $result = $this->cipherService->decrypt($request->text, $request->key);
-            $steps = $this->cipherService->getVisualizationSteps($request->text, $request->key, 'decrypt');
+            $result = $this->cipherService->decrypt($request->text, $key);
+            $steps = $this->cipherService->getVisualizationSteps($request->text, $key, 'decrypt');
 
             return response()->json([
                 'success' => true,

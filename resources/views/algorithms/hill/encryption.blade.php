@@ -72,7 +72,7 @@
                 <div class="text-center mb-3">
                     <span class="text-gray-400 text-sm">Matrix Values (0-25)</span>
                 </div>
-                <div id="matrix-input-container" class="matrix-grid size-2"></div>
+                <div id="matrix-input-container" class="matrix-grid size2"></div>
             </div>
         </div>
     </div>
@@ -116,7 +116,7 @@ function initHillMatrix(sizeSelectId, containerId) {
     if (!sizeSelect || !container) return;
 
     function createMatrixInputs(size) {
-        container.className = `matrix-grid size-${size}`;
+        container.className = `matrix-grid size${size}`;
         container.innerHTML = '';
 
         for (let i = 0; i < size; i++) {

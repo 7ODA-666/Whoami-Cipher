@@ -32,12 +32,39 @@ class OneTimePadController extends Controller
 
     public function generateKey(Request $request)
     {
-        $request->validate([
+        // Custom validation with specific error messages
+        $validator = \Validator::make($request->all(), [
             'text' => 'required|string'
+        ], [
+            'text.required' => 'Text is required to generate a key of matching length.'
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'error' => $validator->errors()->first()
+            ], 422);
+        }
+
+        // Additional text validation
+        $text = trim($request->text);
+        if (empty($text)) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Text cannot be empty.'
+            ], 422);
+        }
+
+        // Check if text contains only alphabetic characters and spaces
+        if (!preg_match('/^[A-Za-z\s]+$/', $text)) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Text must contain only alphabetic characters and spaces.'
+            ], 422);
+        }
+
         try {
-            $key = $this->cipherService->generateRandomKey($request->text);
+            $key = $this->cipherService->generateRandomKey($text);
 
             return response()->json([
                 'success' => true,
@@ -46,21 +73,64 @@ class OneTimePadController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'error' => $e->getMessage()
+                'error' => 'Failed to generate random key.'
             ], 400);
         }
     }
 
     public function processEncrypt(Request $request)
     {
-        $request->validate([
+        // Custom validation with specific error messages
+        $validator = \Validator::make($request->all(), [
             'text' => 'required|string',
             'key' => 'required|string'
+        ], [
+            'text.required' => 'Text to encrypt is required.',
+            'key.required' => 'Key is required.',
+            'key.string' => 'Key must be a valid string.'
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'error' => $validator->errors()->first()
+            ], 422);
+        }
+
+        // Additional validation
+        $text = trim($request->text);
+        $key = trim($request->key);
+
+        // Check if text contains only alphabetic characters and spaces
+        if (!preg_match('/^[A-Za-z\s]+$/', $text)) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Text must contain only alphabetic characters and spaces.'
+            ], 422);
+        }
+
+        // Check if key contains only alphabetic characters
+        if (!preg_match('/^[A-Za-z\s]*$/', $key)) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Key must contain only alphabetic characters.'
+            ], 422);
+        }
+
+        // Validate key length matches text length (excluding spaces)
+        $textLength = strlen(preg_replace('/\s+/', '', $text));
+        $keyLength = strlen(preg_replace('/\s+/', '', $key));
+
+        if ($keyLength !== $textLength) {
+            return response()->json([
+                'success' => false,
+                'error' => "Key length ({$keyLength}) does not match text length ({$textLength}). Key must be exactly the same length as the text (excluding spaces)."
+            ], 422);
+        }
+
         try {
-            $result = $this->cipherService->encrypt($request->text, $request->key);
-            $steps = $this->cipherService->getVisualizationSteps($request->text, $request->key, 'encrypt');
+            $result = $this->cipherService->encrypt($text, $key);
+            $steps = $this->cipherService->getVisualizationSteps($text, $key, 'encrypt');
 
             return response()->json([
                 'success' => true,
@@ -77,14 +147,57 @@ class OneTimePadController extends Controller
 
     public function processDecrypt(Request $request)
     {
-        $request->validate([
+        // Custom validation with specific error messages
+        $validator = \Validator::make($request->all(), [
             'text' => 'required|string',
             'key' => 'required|string'
+        ], [
+            'text.required' => 'Text to decrypt is required.',
+            'key.required' => 'Key is required.',
+            'key.string' => 'Key must be a valid string.'
         ]);
 
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'error' => $validator->errors()->first()
+            ], 422);
+        }
+
+        // Additional validation
+        $text = trim($request->text);
+        $key = trim($request->key);
+
+        // Check if text contains only alphabetic characters and spaces
+        if (!preg_match('/^[A-Za-z\s]+$/', $text)) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Text must contain only alphabetic characters and spaces.'
+            ], 422);
+        }
+
+        // Check if key contains only alphabetic characters
+        if (!preg_match('/^[A-Za-z\s]*$/', $key)) {
+            return response()->json([
+                'success' => false,
+                'error' => 'Key must contain only alphabetic characters.'
+            ], 422);
+        }
+
+        // Validate key length matches text length (excluding spaces)
+        $textLength = strlen(preg_replace('/\s+/', '', $text));
+        $keyLength = strlen(preg_replace('/\s+/', '', $key));
+
+        if ($keyLength !== $textLength) {
+            return response()->json([
+                'success' => false,
+                'error' => "Key length ({$keyLength}) does not match text length ({$textLength}). Key must be exactly the same length as the text (excluding spaces)."
+            ], 422);
+        }
+
         try {
-            $result = $this->cipherService->decrypt($request->text, $request->key);
-            $steps = $this->cipherService->getVisualizationSteps($request->text, $request->key, 'decrypt');
+            $result = $this->cipherService->decrypt($text, $key);
+            $steps = $this->cipherService->getVisualizationSteps($text, $key, 'decrypt');
 
             return response()->json([
                 'success' => true,
