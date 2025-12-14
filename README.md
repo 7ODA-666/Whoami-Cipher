@@ -98,6 +98,6 @@ This project is suitable for:
 
 ## 👤 Author
 
-Developed by **Jaafar**  
+Developed by **P4L Team**  
 Backend & Full-Stack Developer  
 Passionate about cryptography, web development, and clean architecture
