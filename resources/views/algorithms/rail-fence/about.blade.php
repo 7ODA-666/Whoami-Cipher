@@ -7,11 +7,11 @@
 <!-- Tabs -->
 <div class="flex gap-3 mb-6 lg:mb-8 overflow-x-auto">
     <a href="{{ route('rail-fence.encryption') }}"
-       class="tab px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white border-2 border-gray-600 ml-2 mt-2 mb-2">
+       class="tab px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-light-card dark:bg-dark-card text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-light-text dark:hover:text-dark-text border-2 border-light-border dark:border-dark-border ml-2 mt-2 mb-2">
         Encryption
     </a>
     <a href="{{ route('rail-fence.decryption') }}"
-       class="tab px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white border-2 border-gray-600 mt-2 mb-2">
+       class="tab px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-light-card dark:bg-dark-card text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-light-text dark:hover:text-dark-text border-2 border-light-border dark:border-dark-border mt-2 mb-2">
         Decryption
     </a>
     <a href="{{ route('rail-fence.about') }}"
@@ -21,46 +21,46 @@
 </div>
 
 <!-- About Section -->
-<div class="bg-gray-800 border border-gray-700 rounded-xl p-6 lg:p-8 shadow-xl">
+<div class="bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-xl p-6 lg:p-8 shadow-xl">
     <div class="flex items-center gap-4 mb-6">
         <i class="fas fa-wave-square text-4xl text-blue-400"></i>
-        <h2 class="text-3xl font-bold text-gray-100">Rail Fence Cipher</h2>
+        <h2 class="text-3xl font-bold text-light-text dark:text-dark-text">Rail Fence Cipher</h2>
     </div>
 
-    <div class="prose prose-invert max-w-none">
-        <p class="text-gray-300 text-lg leading-relaxed mb-6">
-            The Rail Fence Cipher is a transposition cipher that writes the plaintext in a zigzag pattern along multiple "rails" and then reads it row by row to produce the ciphertext.
+    <div class="prose max-w-none">
+        <p class="text-light-text-secondary dark:text-dark-text-secondary text-lg leading-relaxed mb-6">
+            The Rail Fence Cipher is a transposition cipher that writes the plaintext in a zigzag pattern along multiple "rails" and then reads it row by row to create the ciphertext. It's one of the simplest transposition ciphers.
         </p>
 
-        <h3 class="text-2xl font-bold text-gray-100 mt-8 mb-4">How It Works</h3>
-        <p class="text-gray-300 mb-4">
-            The plaintext is written diagonally down and up along a series of "rails" (horizontal lines). For example, with 3 rails, the word "HELLO" would be written as:
+        <h3 class="text-2xl font-bold text-light-text dark:text-dark-text mt-8 mb-4">How It Works</h3>
+        <p class="text-light-text-secondary dark:text-dark-text-secondary mb-4">
+            The cipher arranges the plaintext in a zigzag pattern across multiple horizontal lines (rails), then reads the letters row by row:
         </p>
-        <pre class="bg-gray-900 p-4 rounded-lg text-gray-100 font-mono mb-4">H . . . O
-E . L . .
-L . . . .</pre>
-        <p class="text-gray-300 mb-4">
-            Reading row by row gives: H O E L L
+        <ul class="list-disc list-inside text-light-text-secondary dark:text-dark-text-secondary mb-6 space-y-2">
+            <li>Write the plaintext in a zigzag pattern across the specified number of rails</li>
+            <li>Start at the top rail, move diagonally down to the bottom rail</li>
+            <li>Then move diagonally up back to the top rail, repeating the pattern</li>
+            <li>Read the letters row by row to form the ciphertext</li>
+        </ul>
+
+        <h3 class="text-2xl font-bold text-light-text dark:text-dark-text mt-8 mb-4">History</h3>
+        <p class="text-light-text-secondary dark:text-dark-text-secondary mb-4">
+            The Rail Fence Cipher has been used since ancient times. It's a simple form of transposition cipher that doesn't require complex mathematical operations, making it accessible for manual encryption and decryption.
         </p>
 
-        <h3 class="text-2xl font-bold text-gray-100 mt-8 mb-4">History</h3>
-        <p class="text-gray-300 mb-4">
-            The Rail Fence Cipher is one of the simplest transposition ciphers. It has been used historically but is not known to have been used by any major military or government organization.
+        <h3 class="text-2xl font-bold text-light-text dark:text-dark-text mt-8 mb-4">Security</h3>
+        <p class="text-light-text-secondary dark:text-dark-text-secondary mb-4">
+            <strong class="text-light-text dark:text-dark-text">Algorithm Type:</strong> Transposition Cipher
+        </p>
+        <p class="text-light-text-secondary dark:text-dark-text-secondary mb-4">
+            The Rail Fence Cipher provides very limited security. With a small number of possible rail configurations, it can be easily broken by trying all possible numbers of rails. It's mainly of educational value rather than practical security use.
         </p>
 
-        <h3 class="text-2xl font-bold text-gray-100 mt-8 mb-4">Security</h3>
-        <p class="text-gray-300 mb-4">
-            <strong class="text-gray-200">Algorithm Type:</strong> Transposition Cipher
-        </p>
-        <p class="text-gray-300 mb-4">
-            The Rail Fence Cipher is very weak and can be easily broken by trying all possible numbers of rails. It provides no real security and is mainly used for educational purposes.
-        </p>
-
-        <h3 class="text-2xl font-bold text-gray-100 mt-8 mb-4">Complexity</h3>
-        <ul class="list-disc list-inside text-gray-300 mb-6 space-y-2">
-            <li><strong>Time Complexity:</strong> O(n) where n is the length of the text</li>
-            <li><strong>Space Complexity:</strong> O(n)</li>
-            <li><strong>Key Space:</strong> Limited (typically 2-10 rails)</li>
+        <h3 class="text-2xl font-bold text-light-text dark:text-dark-text mt-8 mb-4">Complexity</h3>
+        <ul class="list-disc list-inside text-light-text-secondary dark:text-dark-text-secondary mb-6 space-y-2">
+            <li><strong class="text-light-text dark:text-dark-text">Time Complexity:</strong> O(n) where n is the length of the text</li>
+            <li><strong class="text-light-text dark:text-dark-text">Space Complexity:</strong> O(n) for storing the rail pattern</li>
+            <li><strong class="text-light-text dark:text-dark-text">Key Space:</strong> Very limited (typically 2-10 possible rail values)</li>
         </ul>
     </div>
 </div>

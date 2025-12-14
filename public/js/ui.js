@@ -135,22 +135,27 @@ function initThemeToggle() {
 
   // Get saved theme or default to dark
   const savedTheme = localStorage.getItem('theme') || 'dark';
+
+  // Apply theme immediately
   html.classList.toggle('dark', savedTheme === 'dark');
 
   if (themeToggle) {
+    // Set initial icon
+    updateThemeIcon(themeToggle, savedTheme);
+
     themeToggle.addEventListener('click', () => {
       const isDark = html.classList.contains('dark');
       const newTheme = isDark ? 'light' : 'dark';
 
+      // Toggle theme class
       html.classList.toggle('dark', newTheme === 'dark');
+
+      // Save to localStorage
       localStorage.setItem('theme', newTheme);
 
       // Update icon
       updateThemeIcon(themeToggle, newTheme);
     });
-
-    // Set initial icon
-    updateThemeIcon(themeToggle, savedTheme);
   }
 }
 
@@ -159,8 +164,10 @@ function updateThemeIcon(button, theme) {
   if (icon) {
     if (theme === 'dark') {
       icon.className = 'fas fa-moon text-xl';
+      button.setAttribute('aria-label', 'Switch to light mode');
     } else {
       icon.className = 'fas fa-sun text-xl';
+      button.setAttribute('aria-label', 'Switch to dark mode');
     }
   }
 }

@@ -7,7 +7,7 @@
 <!-- Tabs -->
 <div class="flex gap-3 mb-6 lg:mb-8 overflow-x-auto">
     <a href="{{ route('hill.encryption') }}"
-       class="tab px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white border-2 border-gray-600 ml-2 mt-2 mb-2">
+       class="tab px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-light-card dark:bg-dark-card text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-light-text dark:hover:text-dark-text border-2 border-light-border dark:border-dark-border ml-2 mt-2 mb-2">
         Encryption
     </a>
     <a href="{{ route('hill.decryption') }}"
@@ -15,44 +15,44 @@
         Decryption
     </a>
     <a href="{{ route('hill.about') }}"
-       class="tab px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white border-2 border-gray-600 mt-2 mb-2">
+       class="tab px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-light-card dark:bg-dark-card text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-light-text dark:hover:text-dark-text border-2 border-light-border dark:border-dark-border mt-2 mb-2">
         About
     </a>
 </div>
 
 <!-- Visualization Section -->
-<div class="bg-gray-800 border border-gray-700 rounded-xl p-6 mb-8 shadow-xl">
+<div class="bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-xl p-6 mb-8 shadow-xl">
     <div class="flex items-center justify-between mb-4">
         <label class="flex items-center gap-3 cursor-pointer">
             <div class="switch">
                 <input type="checkbox" class="viz-toggle" checked />
-                <span class="slider bg-gray-600"></span>
+                <span class="slider"></span>
             </div>
-            <span class="text-gray-200 font-semibold">Show Visualization</span>
+            <span class="text-light-text dark:text-dark-text font-semibold">Show Visualization</span>
         </label>
     </div>
-    <div class="visualization-content min-h-[200px] p-4 bg-gray-900 rounded-lg border border-gray-700"></div>
+    <div class="visualization-content min-h-[200px] p-4 bg-light-bg dark:bg-dark-bg rounded-lg border border-light-border dark:border-dark-border"></div>
 </div>
 
 <!-- Tool Section -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mb-6 lg:mb-8">
-    <div class="bg-gray-800 border border-gray-700 rounded-xl p-4 lg:p-6 shadow-xl">
-        <label for="ciphertext-input" class="block mb-2 text-gray-200 font-semibold">Ciphertext</label>
+    <div class="bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-xl p-4 lg:p-6 shadow-xl">
+        <label for="ciphertext-input" class="block mb-2 text-light-text dark:text-dark-text font-semibold">Ciphertext</label>
         <textarea
             id="ciphertext-input"
-            class="w-full p-3 lg:p-4 bg-gray-900 border border-gray-700 rounded-lg text-gray-100 font-mono resize-y focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm lg:text-base"
+            class="w-full p-3 lg:p-4 bg-light-bg dark:bg-dark-bg border border-light-border dark:border-dark-border rounded-lg text-light-text dark:text-dark-text font-mono resize-y focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm lg:text-base"
             placeholder="Enter ciphertext (letters only)"
             rows="6"
         ></textarea>
 
         <!-- Matrix Key Section -->
         <div class="matrix-key-section mt-6">
-            <label class="block mb-3 text-gray-200 font-semibold">Key Matrix</label>
+            <label class="block mb-3 text-light-text dark:text-dark-text font-semibold">Key Matrix</label>
 
             <!-- Top Row: Size Select + Generate Button -->
             <div class="flex gap-3 mb-4">
                 <select id="hill-matrix-size-decrypt"
-                        class="flex-1 px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm font-semibold cursor-pointer hover:border-gray-600 transition-colors">
+                        class="flex-1 px-4 py-2 bg-light-bg dark:bg-dark-bg border border-light-border dark:border-dark-border rounded-lg text-light-text dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm font-semibold cursor-pointer hover:border-light-border dark:hover:border-dark-border transition-colors">
                     <option value="2">2 × 2</option>
                     <option value="3">3 × 3</option>
                 </select>
@@ -68,21 +68,21 @@
             </div>
 
             <!-- Matrix Input Container -->
-            <div class="bg-gray-900/50 border border-gray-700 rounded-lg p-4">
+            <div class="bg-light-bg dark:bg-dark-bg border border-light-border dark:border-dark-border rounded-lg p-4">
                 <div class="text-center mb-3">
-                    <span class="text-gray-400 text-sm">Matrix Values (0-25)</span>
+                    <span class="text-light-text-secondary dark:text-dark-text-secondary text-sm">Matrix Values (0-25)</span>
                 </div>
                 <div id="matrix-input-container-decrypt" class="matrix-grid size-2"></div>
             </div>
         </div>
     </div>
 
-    <div class="bg-gray-800 border border-gray-700 rounded-xl p-4 lg:p-6 shadow-xl">
-        <label for="plaintext-output" class="block mb-2 text-gray-200 font-semibold">Plaintext</label>
+    <div class="bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-xl p-4 lg:p-6 shadow-xl">
+        <label for="plaintext-output" class="block mb-2 text-light-text dark:text-dark-text font-semibold">Plaintext</label>
         <textarea
             id="plaintext-output"
             readonly
-            class="w-full p-3 lg:p-4 bg-gray-900 border border-gray-700 rounded-lg text-gray-100 font-mono resize-y cursor-not-allowed opacity-75 text-sm lg:text-base"
+            class="w-full p-3 lg:p-4 bg-light-bg dark:bg-dark-bg border border-light-border dark:border-dark-border rounded-lg text-light-text dark:text-dark-text font-mono resize-y cursor-not-allowed opacity-75 text-sm lg:text-base"
             rows="6"
         ></textarea>
         <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-4">
@@ -93,12 +93,12 @@
                 Decrypt
             </button>
             <button
-                class="copy-btn px-4 sm:px-6 py-2 sm:py-3 bg-gray-700 hover:bg-gray-600 text-gray-200 font-semibold rounded-lg transition-colors border border-gray-600 text-sm sm:text-base"
+                class="copy-btn px-4 sm:px-6 py-2 sm:py-3 bg-light-card dark:bg-dark-card hover:bg-gray-100 dark:hover:bg-gray-600 text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text dark:hover:text-dark-text font-semibold rounded-lg transition-colors border border-light-border dark:border-dark-border text-sm sm:text-base"
             >
                 Copy
             </button>
             <button
-                class="clear-btn px-4 sm:px-6 py-2 sm:py-3 bg-gray-700 hover:bg-gray-600 text-gray-200 font-semibold rounded-lg transition-colors border border-gray-600 text-sm sm:text-base"
+                class="clear-btn px-4 sm:px-6 py-2 sm:py-3 bg-light-card dark:bg-dark-card hover:bg-gray-100 dark:hover:bg-gray-600 text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text dark:hover:text-dark-text font-semibold rounded-lg transition-colors border border-light-border dark:border-dark-border text-sm sm:text-base"
             >
                 Clear
             </button>

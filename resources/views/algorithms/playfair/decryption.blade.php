@@ -7,7 +7,7 @@
 <!-- Tabs -->
 <div class="flex gap-3 mb-6 lg:mb-8 overflow-x-auto">
     <a href="{{ route('playfair.encryption') }}"
-       class="tab px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white border-2 border-gray-600 ml-2 mt-2 mb-2">
+       class="tab px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-light-card dark:bg-dark-card text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-light-text dark:hover:text-dark-text border-2 border-light-border dark:border-dark-border ml-2 mt-2 mb-2">
         Encryption
     </a>
     <a href="{{ route('playfair.decryption') }}"
@@ -15,52 +15,52 @@
         Decryption
     </a>
     <a href="{{ route('playfair.about') }}"
-       class="tab px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white border-2 border-gray-600 mt-2 mb-2">
+       class="tab px-6 py-2.5 rounded-full font-semibold transition-all whitespace-nowrap bg-light-card dark:bg-dark-card text-light-text-secondary dark:text-dark-text-secondary hover:bg-gray-100 dark:hover:bg-gray-600 hover:text-light-text dark:hover:text-dark-text border-2 border-light-border dark:border-dark-border mt-2 mb-2">
         About
     </a>
 </div>
 
 <!-- Visualization Section -->
-<div class="bg-gray-800 border border-gray-700 rounded-xl p-6 mb-8 shadow-xl">
+<div class="bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-xl p-6 mb-8 shadow-xl">
     <div class="flex items-center justify-between mb-4">
         <label class="flex items-center gap-3 cursor-pointer">
             <div class="switch">
                 <input type="checkbox" class="viz-toggle" checked />
-                <span class="slider bg-gray-600"></span>
+                <span class="slider"></span>
             </div>
-            <span class="text-gray-200 font-semibold">Show Visualization</span>
+            <span class="text-light-text dark:text-dark-text font-semibold">Show Visualization</span>
         </label>
     </div>
-    <div class="visualization-content min-h-[200px] p-4 bg-gray-900 rounded-lg border border-gray-700"></div>
+    <div class="visualization-content min-h-[200px] p-4 bg-light-bg dark:bg-dark-bg rounded-lg border border-light-border dark:border-dark-border"></div>
 </div>
 
 <!-- Tool Section -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 mb-6 lg:mb-8">
-    <div class="bg-gray-800 border border-gray-700 rounded-xl p-4 lg:p-6 shadow-xl">
-        <label for="ciphertext-input" class="block mb-2 text-gray-200 font-semibold">Ciphertext</label>
+    <div class="bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-xl p-4 lg:p-6 shadow-xl">
+        <label for="ciphertext-input" class="block mb-2 text-light-text dark:text-dark-text font-semibold">Ciphertext</label>
         <textarea
             id="ciphertext-input"
-            class="w-full p-3 lg:p-4 bg-gray-900 border border-gray-700 rounded-lg text-gray-100 font-mono resize-y focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm lg:text-base"
+            class="w-full p-3 lg:p-4 bg-light-bg dark:bg-dark-bg border border-light-border dark:border-dark-border rounded-lg text-light-text dark:text-dark-text font-mono resize-y focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm lg:text-base"
             placeholder="Enter ciphertext (letters only)"
             rows="6"
         ></textarea>
 
-        <label for="key-input-decrypt" class="block mt-4 mb-2 text-gray-200 font-semibold">Keyword</label>
+        <label for="keyword-input-decrypt" class="block mt-4 mb-2 text-light-text dark:text-dark-text font-semibold">Keyword</label>
         <input
             type="text"
-            id="key-input-decrypt"
-            class="w-full p-3 bg-gray-900 border border-gray-700 rounded-lg text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm lg:text-base"
-            placeholder="Enter keyword (letters only)"
+            id="keyword-input-decrypt"
+            class="w-full p-3 bg-light-bg dark:bg-dark-bg border border-light-border dark:border-dark-border rounded-lg text-light-text dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm lg:text-base"
+            placeholder="Enter keyword (letters only, no J)"
         />
-        <p class="text-xs text-gray-400 mt-2">The keyword is used to build a 5×5 Playfair matrix. Letter J is treated as I.</p>
+        <p class="text-xs text-light-text-secondary dark:text-dark-text-secondary mt-2">Same keyword used for encryption. J is replaced with I.</p>
     </div>
 
-    <div class="bg-gray-800 border border-gray-700 rounded-xl p-4 lg:p-6 shadow-xl">
-        <label for="plaintext-output" class="block mb-2 text-gray-200 font-semibold">Plaintext</label>
+    <div class="bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-xl p-4 lg:p-6 shadow-xl">
+        <label for="plaintext-output" class="block mb-2 text-light-text dark:text-dark-text font-semibold">Plaintext</label>
         <textarea
             id="plaintext-output"
             readonly
-            class="w-full p-3 lg:p-4 bg-gray-900 border border-gray-700 rounded-lg text-gray-100 font-mono resize-y cursor-not-allowed opacity-75 text-sm lg:text-base"
+            class="w-full p-3 lg:p-4 bg-light-bg dark:bg-dark-bg border border-light-border dark:border-dark-border rounded-lg text-light-text dark:text-dark-text font-mono resize-y cursor-not-allowed opacity-75 text-sm lg:text-base"
             rows="6"
         ></textarea>
         <div class="flex flex-col sm:flex-row gap-2 sm:gap-3 mt-4">
@@ -71,12 +71,12 @@
                 Decrypt
             </button>
             <button
-                class="copy-btn px-4 sm:px-6 py-2 sm:py-3 bg-gray-700 hover:bg-gray-600 text-gray-200 font-semibold rounded-lg transition-colors border border-gray-600 text-sm sm:text-base"
+                class="copy-btn px-4 sm:px-6 py-2 sm:py-3 bg-light-card dark:bg-dark-card hover:bg-gray-100 dark:hover:bg-gray-600 text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text dark:hover:text-dark-text font-semibold rounded-lg transition-colors border border-light-border dark:border-dark-border text-sm sm:text-base"
             >
                 Copy
             </button>
             <button
-                class="clear-btn px-4 sm:px-6 py-2 sm:py-3 bg-gray-700 hover:bg-gray-600 text-gray-200 font-semibold rounded-lg transition-colors border border-gray-600 text-sm sm:text-base"
+                class="clear-btn px-4 sm:px-6 py-2 sm:py-3 bg-light-card dark:bg-dark-card hover:bg-gray-100 dark:hover:bg-gray-600 text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text dark:hover:text-dark-text font-semibold rounded-lg transition-colors border border-light-border dark:border-dark-border text-sm sm:text-base"
             >
                 Clear
             </button>
@@ -89,7 +89,7 @@
 <script>
 function executeDecrypt() {
     const inputField = document.getElementById('ciphertext-input');
-    const keyField = document.getElementById('key-input-decrypt');
+    const keyField = document.getElementById('keyword-input-decrypt');
     const outputField = document.getElementById('plaintext-output');
     const vizContent = document.querySelector('.visualization-content');
 

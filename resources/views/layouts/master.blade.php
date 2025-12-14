@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en" id="html-root">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,10 +17,30 @@
                         'vibrant-blue': '#3b82f6',
                         'vibrant-orange': '#f97316',
                         'vibrant-purple': '#a855f7',
+                        // Light mode specific colors
+                        'light-bg': '#f8fafc',
+                        'light-card': '#ffffff',
+                        'light-border': '#e2e8f0',
+                        'light-text': '#1e293b',
+                        'light-text-secondary': '#64748b',
+                        // Dark mode specific colors
+                        'dark-bg': '#0f172a',
+                        'dark-card': '#1e293b',
+                        'dark-border': '#334155',
+                        'dark-text': '#f1f5f9',
+                        'dark-text-secondary': '#94a3b8',
                     }
                 }
             }
         }
+    </script>
+
+    <!-- Initialize theme before page load to prevent flash -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+        })();
     </script>
 
     <!-- Custom CSS -->
@@ -29,7 +49,7 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans antialiased">
+<body class="bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text font-sans antialiased transition-colors duration-200">
     @include('layouts.sidebar')
 
     <!-- Main Content -->
