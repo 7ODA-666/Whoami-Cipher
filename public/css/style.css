@@ -388,11 +388,13 @@ input:checked + .slider:before {
 
 .matrix-grid.size2 {
   grid-template-columns: repeat(2, 1fr);
+    width: 0;
   max-width: 200px;
 }
 
 .matrix-grid.size3 {
   grid-template-columns: repeat(3, 1fr);
+    width: 0;
   max-width: 280px;
 }
 

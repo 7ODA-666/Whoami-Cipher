@@ -158,20 +158,26 @@ class PlayfairCipherService
         $isEncrypt = $mode === 'encrypt';
 
         $steps[] = [
-            'html' => '<p><strong>Step 1:</strong> Building 5×5 Playfair matrix</p>',
+            'html' => '<div class="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg mb-4">
+                        <p class="text-light-text dark:text-dark-text font-semibold">
+                            <strong>Step 1:</strong> Building 5×5 Playfair matrix
+                        </p>
+                      </div>',
             'delay' => 500
         ];
 
-        // Display matrix
-        $matrixHtml = '<table style="border-collapse: collapse; margin: 1rem 0;"><tbody>';
+        // Display matrix with theme-aware styling
+        $matrixHtml = '<div class="flex justify-center mb-4">
+                        <table class="border-collapse bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-lg overflow-hidden">
+                          <tbody>';
         for ($row = 0; $row < 5; $row++) {
             $matrixHtml .= '<tr>';
             for ($col = 0; $col < 5; $col++) {
-                $matrixHtml .= '<td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; width: 40px;">' . $matrix[$row * 5 + $col] . '</td>';
+                $matrixHtml .= '<td class="border border-light-border dark:border-dark-border bg-indigo-50 dark:bg-indigo-900/20 px-3 py-2 text-center text-light-text dark:text-dark-text font-mono font-semibold min-w-[40px]">' . $matrix[$row * 5 + $col] . '</td>';
             }
             $matrixHtml .= '</tr>';
         }
-        $matrixHtml .= '</tbody></table>';
+        $matrixHtml .= '</tbody></table></div>';
 
         $steps[] = [
             'html' => $matrixHtml,
@@ -181,7 +187,12 @@ class PlayfairCipherService
         $prepared = $isEncrypt ? $this->prepareText($text) : strtoupper(preg_replace('/\s+/', '', $text));
         $pairs = str_split($prepared, 2);
         $steps[] = [
-            'html' => '<p><strong>Step 2:</strong> Prepared text (in pairs): ' . implode(' ', $pairs) . '</p>',
+            'html' => '<div class="p-3 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700 rounded-lg mb-3">
+                        <p class="text-light-text-secondary dark:text-dark-text-secondary">
+                            <strong>Step 2:</strong> Prepared text (in pairs):
+                            <span class="font-mono bg-purple-100 dark:bg-purple-800 px-2 py-1 rounded text-purple-800 dark:text-purple-200">' . implode(' ', $pairs) . '</span>
+                        </p>
+                      </div>',
             'delay' => 800
         ];
 
@@ -210,13 +221,28 @@ class PlayfairCipherService
             }
 
             $steps[] = [
-                'html' => '<p><strong>Pair ' . (($i / 2) + 1) . ':</strong> "' . $char1 . '" (' . $pos1['row'] . ',' . $pos1['col'] . ') and "' . $char2 . '" (' . $pos2['row'] . ',' . $pos2['col'] . ') → ' . $rule . ' → "' . $pair['char1'] . $pair['char2'] . '"</p>',
+                'html' => '<div class="p-3 bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-700 rounded-lg mb-3">
+                            <p class="text-light-text-secondary dark:text-dark-text-secondary">
+                                <strong>Pair ' . (($i / 2) + 1) . ':</strong>
+                                <span class="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">"' . $char1 . '"</span>
+                                (<span class="text-teal-600 dark:text-teal-400">' . $pos1['row'] . ',' . $pos1['col'] . '</span>) and
+                                <span class="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">"' . $char2 . '"</span>
+                                (<span class="text-teal-600 dark:text-teal-400">' . $pos2['row'] . ',' . $pos2['col'] . '</span>) →
+                                <span class="text-teal-700 dark:text-teal-300 font-medium">' . $rule . '</span> →
+                                <span class="font-mono bg-green-100 dark:bg-green-800 px-2 py-1 rounded text-green-800 dark:text-green-200">"' . $pair['char1'] . $pair['char2'] . '"</span>
+                            </p>
+                          </div>',
                 'delay' => 1000
             ];
         }
 
         $steps[] = [
-            'html' => '<p><strong>Result:</strong> ' . $result . '</p>',
+            'html' => '<div class="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg">
+                        <p class="text-light-text dark:text-dark-text font-bold text-lg">
+                            <strong>Final Result:</strong>
+                            <span class="font-mono bg-green-100 dark:bg-green-800 px-3 py-2 rounded text-green-800 dark:text-green-200">' . $result . '</span>
+                        </p>
+                      </div>',
             'delay' => 500
         ];
 

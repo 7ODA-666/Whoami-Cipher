@@ -35,7 +35,7 @@ class RailFenceCipherService
         $direction = 1;
         $rail = 0;
 
-        for ($i = 0; $i < strlen($text); $i++) {
+        for ($i = 0; $i < (strlen($text)); $i++) {
             $fence[$rail][] = $text[$i];
             $rail += $direction;
 
@@ -69,7 +69,7 @@ class RailFenceCipherService
         $direction = 1;
         $rail = 0;
 
-        for ($i = 0; $i < strlen($text); $i++) {
+        for ($i = 0; $i < (strlen($text)); $i++) {
             $positions[] = $rail;
             $rail += $direction;
 
@@ -99,7 +99,7 @@ class RailFenceCipherService
         $rail = 0;
         $railIndices = array_fill(0, $rails, 0);
 
-        for ($i = 0; $i < strlen($text); $i++) {
+        for ($i = 0; $i < (strlen($text)); $i++) {
             $result .= $fence[$rail][$railIndices[$rail]++];
             $rail += $direction;
 
@@ -118,12 +118,22 @@ class RailFenceCipherService
         $isEncrypt = $mode === 'encrypt';
 
         $steps[] = [
-            'html' => '<p><strong>Step 1:</strong> ' . ($isEncrypt ? 'Encryption' : 'Decryption') . ' using ' . $rails . ' rails</p>',
+            'html' => '<div class="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg mb-4">
+                        <p class="text-light-text dark:text-dark-text font-semibold">
+                            <strong>Step 1:</strong> ' . ($isEncrypt ? 'Encryption' : 'Decryption') . ' using
+                            <span class="text-blue-600 dark:text-blue-400">' . $rails . ' rails</span>
+                        </p>
+                      </div>',
             'delay' => 500
         ];
 
         $steps[] = [
-            'html' => '<p><strong>Text:</strong> ' . $cleanText . '</p>',
+            'html' => '<div class="p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg mb-3">
+                        <p class="text-light-text-secondary dark:text-dark-text-secondary">
+                            <strong>Text:</strong>
+                            <span class="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-gray-800 dark:text-gray-200">' . $cleanText . '</span>
+                        </p>
+                      </div>',
             'delay' => 500
         ];
 
@@ -166,13 +176,17 @@ class RailFenceCipherService
 
         // Show final reading step
         $steps[] = [
-            'html' => '<p><strong>Step 2:</strong> Reading characters rail by rail to form ciphertext</p>',
+            'html' => '<div class="p-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700 rounded-lg mb-4">
+                        <p class="text-light-text dark:text-dark-text font-semibold">
+                            <strong>Step 2:</strong> Reading characters rail by rail to form ciphertext
+                        </p>
+                      </div>',
             'delay' => 500
         ];
 
         $result = '';
-        $finalHtml = '<div style="background: #1e2937; padding: 15px; border-radius: 5px; margin: 10px 0;">';
-        $finalHtml .= '<p><strong>Reading Order:</strong></p>';
+        $finalHtml = '<div class="p-4 bg-light-card dark:bg-dark-card border border-dark-border dark:border-light-border rounded-lg mb-4">
+                        <p class="text-light-text dark:text-dark-text font-semibold mb-3">Reading Order:</p>';
 
         for ($r = 0; $r < $rails; $r++) {
             $railChars = '';
@@ -183,7 +197,10 @@ class RailFenceCipherService
                 }
             }
             if (!empty($railChars)) {
-                $finalHtml .= '<p>Rail ' . ($r + 1) . ': <strong style="color: #007bff;">' . $railChars . '</strong></p>';
+                $finalHtml .= '<p class="text-light-text-secondary dark:text-dark-text-secondary mb-2">
+                                Rail ' . ($r + 1) . ':
+                                <span class="font-mono bg-blue-100 dark:bg-blue-800 px-2 py-1 rounded text-blue-800 dark:text-blue-200 font-semibold">' . $railChars . '</span>
+                              </p>';
             }
         }
         $finalHtml .= '</div>';
@@ -194,7 +211,12 @@ class RailFenceCipherService
         ];
 
         $steps[] = [
-            'html' => '<p><strong>Final Result:</strong> <span style="font-size: 1.2em; color: #28a745; font-weight: bold;">' . $result . '</span></p>',
+            'html' => '<div class="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg">
+                        <p class="text-light-text dark:text-dark-text font-bold text-lg">
+                            <strong>Final Result:</strong>
+                            <span class="font-mono bg-green-100 dark:bg-green-800 px-3 py-2 rounded text-green-800 dark:text-green-200">' . $result . '</span>
+                        </p>
+                      </div>',
             'delay' => 500
         ];
 
@@ -207,7 +229,11 @@ class RailFenceCipherService
 
         // Step 1: Show how we determine the zigzag pattern
         $steps[] = [
-            'html' => '<p><strong>Step 2:</strong> First, determine the zigzag pattern positions</p>',
+            'html' => '<div class="p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-700 rounded-lg mb-4">
+                        <p class="text-light-text dark:text-dark-text font-semibold">
+                            <strong>Step 2:</strong> First, determine the zigzag pattern positions
+                        </p>
+                      </div>',
             'delay' => 500
         ];
 
@@ -225,9 +251,9 @@ class RailFenceCipherService
         }
 
         // Show the pattern
-        $patternHtml = '<div style="background: #1e2937; padding: 15px; border-radius: 5px; margin: 10px 0;">';
-        $patternHtml .= '<p><strong>Zigzag Pattern:</strong></p>';
-        $patternHtml .= '<pre style="font-family: monospace; font-size: 14px; line-height: 1.8;">';
+        $patternHtml = '<div class="p-4 bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-lg mb-4">
+                          <p class="text-light-text dark:text-dark-text font-semibold mb-3">Zigzag Pattern:</p>
+                          <pre class="font-mono text-sm leading-relaxed bg-light-bg dark:bg-dark-bg p-4 border border-light-border dark:border-dark-border rounded text-light-text dark:text-dark-text overflow-x-auto">';
 
         for ($r = 0; $r < $rails; $r++) {
             $patternHtml .= 'Rail ' . ($r + 1) . ': ';
@@ -249,7 +275,11 @@ class RailFenceCipherService
 
         // Step 2: Distribute characters to rails
         $steps[] = [
-            'html' => '<p><strong>Step 3:</strong> Distribute ciphertext characters to their respective rails</p>',
+            'html' => '<div class="p-4 bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-700 rounded-lg mb-4">
+                        <p class="text-light-text dark:text-dark-text font-semibold">
+                            <strong>Step 3:</strong> Distribute ciphertext characters to their respective rails
+                        </p>
+                      </div>',
             'delay' => 500
         ];
 
@@ -265,8 +295,8 @@ class RailFenceCipherService
             }
         }
 
-        $distributionHtml = '<div style="background: #1e2937; padding: 15px; border-radius: 5px; margin: 10px 0;">';
-        $distributionHtml .= '<p><strong>Character Distribution:</strong></p>';
+        $distributionHtml = '<div class="p-4 bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-lg mb-4">
+                              <p class="text-light-text dark:text-dark-text font-semibold mb-3">Character Distribution:</p>';
         $charIndex = 0;
         for ($r = 0; $r < $rails; $r++) {
             $count = count(array_filter($positions, function ($p) use ($r) {
@@ -274,7 +304,10 @@ class RailFenceCipherService
             }));
             if ($count > 0) {
                 $railChars = substr($cleanText, $charIndex, $count);
-                $distributionHtml .= '<p>Rail ' . ($r + 1) . ': <strong style="color: #856404;">' . implode(' ', str_split($railChars)) . '</strong></p>';
+                $distributionHtml .= '<p class="text-light-text-secondary dark:text-dark-text-secondary mb-2">
+                                      Rail ' . ($r + 1) . ':
+                                      <span class="font-mono bg-amber-100 dark:bg-amber-800 px-2 py-1 rounded text-amber-800 dark:text-amber-200 font-semibold">' . implode(' ', str_split($railChars)) . '</span>
+                                    </p>';
                 $charIndex += $count;
             }
         }
@@ -287,7 +320,11 @@ class RailFenceCipherService
 
         // Step 3: Read in zigzag order
         $steps[] = [
-            'html' => '<p><strong>Step 4:</strong> Read characters following the original zigzag pattern</p>',
+            'html' => '<div class="p-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700 rounded-lg mb-4">
+                        <p class="text-light-text dark:text-dark-text font-semibold">
+                            <strong>Step 4:</strong> Read characters following the original zigzag pattern
+                        </p>
+                      </div>',
             'delay' => 500
         ];
 
@@ -318,7 +355,12 @@ class RailFenceCipherService
         ];
 
         $steps[] = [
-            'html' => '<p><strong>Final Result:</strong> <span style="font-size: 1.2em; color: #28a745; font-weight: bold;">' . $result . '</span></p>',
+            'html' => '<div class="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg">
+                        <p class="text-light-text dark:text-dark-text font-bold text-lg">
+                            <strong>Final Result:</strong>
+                            <span class="font-mono bg-green-100 dark:bg-green-800 px-3 py-2 rounded text-green-800 dark:text-green-200">' . $result . '</span>
+                        </p>
+                      </div>',
             'delay' => 500
         ];
 
@@ -327,45 +369,57 @@ class RailFenceCipherService
 
     private function generateFenceVisualization(array $fence, int $rails, int $textLength, int $currentPos = -1, int $currentRail = -1, string $currentChar = '', bool $isComplete = false): string
     {
-        $html = '<div style="background: #1e2937; padding: 15px; border-radius: 5px; margin: 10px 0;">';
+        $html = '<div class="p-4 bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-lg mb-4">';
 
         if ($currentPos >= 0) {
-            $html .= '<p><strong>Position ' . ($currentPos + 1) . ':</strong> Character "' . $currentChar . '" placed on Rail ' . ($currentRail + 1) . '</p>';
+            $html .= '<div class="mb-3 p-2 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded">
+                        <p class="text-light-text dark:text-dark-text text-sm">
+                            <strong>Position ' . ($currentPos + 1) . ':</strong> Character
+                            <span class="font-mono bg-blue-100 dark:bg-blue-800 px-2 py-1 rounded text-blue-800 dark:text-blue-200">"' . $currentChar . '"</span>
+                            placed on
+                            <span class="font-semibold text-blue-600 dark:text-blue-400">Rail ' . ($currentRail + 1) . '</span>
+                        </p>
+                      </div>';
         }
 
-        $html .= '<pre style="font-family: monospace; font-size: 14px; line-height: 1.8; background: #1e2937; padding: 15px; border: 1px solid #dee2e6; border-radius: 4px;">';
+        $html .= '<div class="bg-light-bg dark:bg-dark-bg border border-dark-border dark:border-light-border rounded p-3 overflow-x-auto">
+                    <pre class="font-mono text-xs sm:text-sm leading-relaxed text-dark-text dark:text-light-text whitespace-pre border-none bg-transparent ">';
 
         // Add position numbers header
-        $html .= 'Pos: ';
+        $html .= '<span class="text-light-text-secondary dark:text-dark-text-secondary">Pos: </span>';
         for ($i = 0; $i < $textLength; $i++) {
-            $html .= sprintf('%2d ', $i + 1);
+            $html .= sprintf('<span class="text-light-text-secondary dark:text-dark-text-secondary">%2d </span>', $i + 1);
         }
         $html .= "\n";
-        $html .= str_repeat('-', 4 + $textLength * 3) . "\n";
+        $html .= '<span class="text-dark-border dark:text-light-border">' . str_repeat('-', 5 + $textLength * 3) . '</span>' . "\n";
 
         // Generate each rail
         for ($r = 0; $r < $rails; $r++) {
-            $html .= sprintf('R%d:  ', $r + 1);
+            $html .= sprintf('<span class="text-light-text-secondary dark:text-dark-text-secondary">R%d: </span> ', $r + 1);
 
             for ($i = 0; $i < $textLength; $i++) {
                 $char = $fence[$r][$i];
 
                 // Highlight current position
                 if ($i === $currentPos && $r === $currentRail) {
-                    $html .= '<span style="background-color: #007bff; color: white; padding: 2px 4px; border-radius: 3px;">' . $char . '</span> ';
+                    $html .= '<span class="bg-blue-600 text-white px-1 rounded font-bold">' . $char . '</span> ';
                 } elseif ($char !== '.') {
-                    $html .= '<span style="color: #007bff; font-weight: bold;">' . $char . '</span>  ';
+                    $html .= '<span class="text-blue-600 dark:text-blue-400 font-bold">' . $char . '</span>  ';
                 } else {
-                    $html .= '.  ';
+                    $html .= '<span class="text-light-text-secondary dark:text-dark-text-secondary">.</span>  ';
                 }
             }
             $html .= "\n";
         }
 
-        $html .= '</pre>';
+        $html .= '</pre></div>';
 
         if ($isComplete) {
-            $html .= '<p><em>Complete Rail Fence pattern showing the decrypted message</em></p>';
+            $html .= '<div class="mt-3 p-2 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded">
+                        <p class="text-light-text-secondary dark:text-dark-text-secondary text-sm italic">
+                            Complete Rail Fence pattern showing the decrypted message
+                        </p>
+                      </div>';
         }
 
         $html .= '</div>';

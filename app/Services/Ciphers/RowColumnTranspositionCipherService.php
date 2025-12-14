@@ -111,12 +111,25 @@ class RowColumnTranspositionCipherService
         $isEncrypt = $mode === 'encrypt';
 
         $steps[] = [
-            'html' => '<p><strong>Step 1:</strong> ' . ($isEncrypt ? 'Encryption' : 'Decryption') . ' using Row-Column Transposition</p>',
+            'html' => '<div class="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg mb-4">
+                        <p class="text-light-text dark:text-dark-text font-semibold">
+                            <strong>Step 1:</strong> ' . ($isEncrypt ? 'Encryption' : 'Decryption') . ' using Row-Column Transposition
+                        </p>
+                      </div>',
             'delay' => 500
         ];
 
         $steps[] = [
-            'html' => '<p><strong>Keyword:</strong> ' . $upperKey . '</p><p><strong>Text:</strong> ' . $cleanText . '</p>',
+            'html' => '<div class="p-4 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-700 rounded-lg mb-4">
+                        <p class="text-light-text-secondary dark:text-dark-text-secondary mb-2">
+                            <strong>Keyword:</strong>
+                            <span class="font-mono bg-indigo-100 dark:bg-indigo-800 px-2 py-1 rounded text-indigo-800 dark:text-indigo-200">' . $upperKey . '</span>
+                        </p>
+                        <p class="text-light-text-secondary dark:text-dark-text-secondary">
+                            <strong>Text:</strong>
+                            <span class="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">' . $cleanText . '</span>
+                        </p>
+                      </div>',
             'delay' => 500
         ];
 
@@ -125,7 +138,12 @@ class RowColumnTranspositionCipherService
             $numRows = (int) ceil(strlen($cleanText) / $keyLength);
 
             $steps[] = [
-                'html' => '<p><strong>Step 2:</strong> Writing text row by row into ' . $numRows . '×' . $keyLength . ' grid</p>',
+                'html' => '<div class="p-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-700 rounded-lg mb-4">
+                            <p class="text-light-text dark:text-dark-text font-semibold">
+                                <strong>Step 2:</strong> Writing text row by row into
+                                <span class="text-purple-600 dark:text-purple-400">' . $numRows . '×' . $keyLength . '</span> grid
+                            </p>
+                          </div>',
                 'delay' => 500
             ];
 

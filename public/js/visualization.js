@@ -23,7 +23,7 @@ class VisualizationEngine {
     this.stepElements = [];
 
     if (!this.steps || this.steps.length === 0) {
-      this.container.innerHTML = '<p class="text-gray-400 text-center py-8">No visualization available for this operation.</p>';
+      this.container.innerHTML = '<p class="text-light-text-secondary dark:text-dark-text-secondary text-center py-8">No visualization available for this operation.</p>';
       return;
     }
 
@@ -45,17 +45,17 @@ class VisualizationEngine {
 
   createHeader(algorithmName) {
     const header = document.createElement('div');
-    header.className = 'mb-6 pb-4 border-b border-gray-600 dark:border-gray-700';
+    header.className = 'mb-6 pb-4 border-b border-light-border dark:border-dark-border';
     header.innerHTML = `
       <div class="flex items-center justify-between">
         <div>
-          <h3 class="text-xl font-bold text-gray-200 dark:text-gray-300 mb-1">
+          <h3 class="text-xl font-bold text-light-text dark:text-dark-text mb-1">
             Step-by-Step ${algorithmName.replace('Cipher', '')} Process
           </h3>
-          <p class="text-sm text-gray-400">Interactive visualization of the encryption/decryption process</p>
+          <p class="text-sm text-light-text-secondary dark:text-dark-text-secondary">Interactive visualization of the encryption/decryption process</p>
         </div>
         <div class="flex items-center gap-2">
-          <span class="text-xs text-gray-500 font-mono" id="viz-step-counter">Step 0 of ${this.steps.length}</span>
+          <span class="text-xs text-light-text-secondary dark:text-dark-text-secondary font-mono" id="viz-step-counter">Step 0 of ${this.steps.length}</span>
         </div>
       </div>
     `;
@@ -64,25 +64,25 @@ class VisualizationEngine {
 
   createControls() {
     const controls = document.createElement('div');
-    controls.className = 'flex items-center gap-3 mb-4 p-3 bg-gray-900 rounded-lg border border-gray-700';
+    controls.className = 'flex items-center gap-3 mb-4 p-3 bg-light-card dark:bg-dark-card rounded-lg border border-light-border dark:border-dark-border';
     controls.innerHTML = `
       <button id="viz-play-pause" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm font-semibold">
         <i class="fas fa-play mr-2"></i>Play
       </button>
-      <button id="viz-prev" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-lg transition-colors text-sm font-semibold" disabled>
+      <button id="viz-prev" class="px-4 py-2 bg-light-card dark:bg-dark-card hover:bg-gray-100 dark:hover:bg-gray-600 text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text dark:hover:text-dark-text rounded-lg transition-colors text-sm font-semibold border border-light-border dark:border-dark-border" disabled>
         <i class="fas fa-step-backward mr-2"></i>Previous
       </button>
-      <button id="viz-next" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-lg transition-colors text-sm font-semibold">
+      <button id="viz-next" class="px-4 py-2 bg-light-card dark:bg-dark-card hover:bg-gray-100 dark:hover:bg-gray-600 text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text dark:hover:text-dark-text rounded-lg transition-colors text-sm font-semibold border border-light-border dark:border-dark-border">
         <i class="fas fa-step-forward mr-2"></i>Next
       </button>
-      <button id="viz-reset" class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-gray-200 rounded-lg transition-colors text-sm font-semibold">
+      <button id="viz-reset" class="px-4 py-2 bg-light-card dark:bg-dark-card hover:bg-gray-100 dark:hover:bg-gray-600 text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text dark:hover:text-dark-text rounded-lg transition-colors text-sm font-semibold border border-light-border dark:border-dark-border">
         <i class="fas fa-redo mr-2"></i>Reset
       </button>
       <div class="flex-1"></div>
       <div class="flex items-center gap-2">
-        <label class="text-xs text-gray-400">Speed:</label>
+        <label class="text-xs text-light-text-secondary dark:text-dark-text-secondary">Speed:</label>
         <input type="range" id="viz-speed" min="200" max="3000" value="${this.speed}" step="100" class="w-24">
-        <span class="text-xs text-gray-400 font-mono w-12" id="viz-speed-value">${this.speed}ms</span>
+        <span class="text-xs text-light-text-secondary dark:text-dark-text-secondary font-mono w-12" id="viz-speed-value">${this.speed}ms</span>
       </div>
     `;
     this.container.appendChild(controls);
@@ -100,7 +100,7 @@ class VisualizationEngine {
 
   play() {
     if (this.isPlaying) return;
-    
+
     this.isPlaying = true;
     const playPauseBtn = document.getElementById('viz-play-pause');
     if (playPauseBtn) {
@@ -157,7 +157,7 @@ class VisualizationEngine {
 
     this.pause();
     this.currentStep--;
-    
+
     // Remove last step element
     if (this.stepElements[this.currentStep]) {
       this.stepElements[this.currentStep].remove();
@@ -170,7 +170,7 @@ class VisualizationEngine {
 
   nextStep() {
     if (this.currentStep >= this.steps.length) return;
-    
+
     this.pause();
     this.showNextStep();
   }
@@ -192,16 +192,16 @@ class VisualizationEngine {
     if (!stepsContainer) return;
 
     const stepElement = document.createElement('div');
-    stepElement.className = 'visualization-step p-5 bg-gray-800 dark:bg-gray-900 rounded-lg border-2 border-blue-500 shadow-lg transform transition-all duration-500';
+    stepElement.className = 'visualization-step p-5 bg-light-card dark:bg-dark-card rounded-lg border-2 border-blue-500 shadow-lg transform transition-all duration-500';
     stepElement.style.opacity = '0';
     stepElement.style.transform = 'translateY(20px)';
 
     // Parse and enhance HTML
     let html = step.html || step.description || '';
-    
+
     // Enhance tables for better visibility
     html = this.enhanceTables(html);
-    
+
     // Add step number badge
     const stepNumber = document.createElement('div');
     stepNumber.className = 'inline-flex items-center px-3 py-1 mb-3 bg-blue-600 text-white text-xs font-bold rounded-full';
@@ -210,7 +210,7 @@ class VisualizationEngine {
 
     // Add content
     const content = document.createElement('div');
-    content.className = 'text-gray-200 dark:text-gray-300';
+    content.className = 'text-light-text dark:text-dark-text';
     content.innerHTML = html;
     stepElement.appendChild(content);
 
@@ -231,22 +231,22 @@ class VisualizationEngine {
   }
 
   enhanceTables(html) {
-    // Enhance matrix tables
+    // Enhance matrix tables with theme-aware classes
     html = html.replace(/<table/g, '<table class="w-full border-collapse my-4 mx-auto max-w-md"');
-    html = html.replace(/<td([^>]*)>/g, '<td$1 class="p-3 border border-gray-600 dark:border-gray-500 text-center bg-gray-700 dark:bg-gray-800 font-mono text-lg font-semibold">');
-    html = html.replace(/<th([^>]*)>/g, '<th$1 class="p-3 border border-gray-600 dark:border-gray-500 text-center bg-gray-600 dark:bg-gray-700 font-bold text-gray-200">');
-    html = html.replace(/<tr([^>]*)>/g, '<tr$1 class="hover:bg-gray-700 dark:hover:bg-gray-800 transition-colors">');
-    
-    // Enhance code/math expressions
-    html = html.replace(/(\d+)\s*([+\-×])\s*(\d+)\s*=\s*(\d+)/g, 
-      '<span class="font-mono text-blue-400">$1</span> <span class="text-purple-400 font-bold">$2</span> <span class="font-mono text-blue-400">$3</span> <span class="text-gray-400">=</span> <span class="font-mono text-green-400 font-bold text-xl">$4</span>');
-    
+    html = html.replace(/<td([^>]*)>/g, '<td$1 class="p-3 border border-light-border dark:border-dark-border text-center bg-light-bg dark:bg-dark-bg font-mono text-lg font-semibold text-light-text dark:text-dark-text">');
+    html = html.replace(/<th([^>]*)>/g, '<th$1 class="p-3 border border-light-border dark:border-dark-border text-center bg-light-card dark:bg-dark-card font-bold text-light-text dark:text-dark-text">');
+    html = html.replace(/<tr([^>]*)>/g, '<tr$1 class="hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">');
+
+    // Enhance code/math expressions with theme-aware colors
+    html = html.replace(/(\d+)\s*([+\-×])\s*(\d+)\s*=\s*(\d+)/g,
+      '<span class="font-mono text-blue-600 dark:text-blue-400">$1</span> <span class="text-purple-600 dark:text-purple-400 font-bold">$2</span> <span class="font-mono text-blue-600 dark:text-blue-400">$3</span> <span class="text-light-text-secondary dark:text-dark-text-secondary">=</span> <span class="font-mono text-green-600 dark:text-green-400 font-bold text-xl">$4</span>');
+
     // Enhance modulo operations
-    html = html.replace(/\(mod\s+(\d+)\)/g, '<span class="text-orange-400 font-mono text-sm">(mod $1)</span>');
-    
+    html = html.replace(/\(mod\s+(\d+)\)/g, '<span class="text-orange-600 dark:text-orange-400 font-mono text-sm">(mod $1)</span>');
+
     // Enhance character mappings
-    html = html.replace(/"([A-Z])"/g, '<span class="font-mono text-xl text-blue-400 font-bold">"$1"</span>');
-    
+    html = html.replace(/"([A-Z])"/g, '<span class="font-mono text-xl text-blue-600 dark:text-blue-400 font-bold">"$1"</span>');
+
     return html;
   }
 
@@ -255,12 +255,12 @@ class VisualizationEngine {
     this.stepElements.forEach((el, index) => {
       if (index < this.currentStep - 1) {
         el.classList.remove('border-blue-500', 'ring-4', 'ring-blue-500', 'ring-opacity-50');
-        el.classList.add('border-gray-600');
+        el.classList.add('border-light-border', 'dark:border-dark-border');
       }
     });
 
     // Highlight current step
-    stepElement.classList.remove('border-gray-600');
+    stepElement.classList.remove('border-light-border', 'dark:border-dark-border');
     stepElement.classList.add('border-blue-500', 'ring-4', 'ring-blue-500', 'ring-opacity-50');
   }
 
@@ -275,11 +275,11 @@ class VisualizationEngine {
   updateControls() {
     const prevBtn = document.getElementById('viz-prev');
     const nextBtn = document.getElementById('viz-next');
-    
+
     if (prevBtn) {
       prevBtn.disabled = this.currentStep <= 0;
     }
-    
+
     if (nextBtn) {
       nextBtn.disabled = this.currentStep >= this.steps.length;
     }
@@ -304,7 +304,7 @@ function renderVisualization(container, steps, algorithmName) {
   container.innerHTML = '';
 
   if (!steps || !Array.isArray(steps) || steps.length === 0) {
-    container.innerHTML = '<p class="text-gray-400 text-center py-8">No visualization available for this operation.</p>';
+    container.innerHTML = '<p class="text-light-text-secondary dark:text-dark-text-secondary text-center py-8">No visualization available for this operation.</p>';
     return;
   }
 

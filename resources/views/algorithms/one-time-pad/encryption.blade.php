@@ -112,7 +112,7 @@ function generateOTPKey() {
     const plaintext = inputField.value.trim();
 
     if (!plaintext) {
-        alert('Please enter plaintext first to generate a matching key.');
+        showError('Please enter plaintext first to generate a matching key.');
         return;
     }
 
@@ -140,13 +140,13 @@ function generateOTPKey() {
             }, 1000);
         } else {
             keyField.value = originalValue;
-            alert('Error generating key: ' + (data.error || 'Unknown error'));
+            showError('Error generating key: ' + (data.error || 'Unknown error'));
         }
     })
     .catch(error => {
         keyField.value = originalValue;
         console.error('Error:', error);
-        alert('Failed to generate key. Please try again.');
+        showError('Failed to generate key. Please try again.');
     })
     .finally(() => {
         keyField.disabled = false;

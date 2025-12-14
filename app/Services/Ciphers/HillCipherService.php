@@ -300,20 +300,26 @@ class HillCipherService
         $isEncrypt = $mode === 'encrypt';
 
         $steps[] = [
-            'html' => '<p><strong>Step 1:</strong> ' . $size . '×' . $size . ' Key Matrix</p>',
+            'html' => '<div class="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg mb-4">
+                        <p class="text-light-text dark:text-dark-text font-semibold">
+                            <strong>Step 1:</strong> ' . $size . '×' . $size . ' Key Matrix
+                        </p>
+                      </div>',
             'delay' => 500
         ];
 
-        // Display matrix
-        $matrixHtml = '<table style="border-collapse: collapse; margin: 1rem 0;"><tbody>';
+        // Display matrix with theme-aware styling
+        $matrixHtml = '<div class="flex justify-center mb-4">
+                        <table class="border-collapse bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-lg overflow-hidden">
+                          <tbody>';
         for ($row = 0; $row < $size; $row++) {
             $matrixHtml .= '<tr>';
             for ($col = 0; $col < $size; $col++) {
-                $matrixHtml .= '<td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; width: 50px;">' . $matrix[$row][$col] . '</td>';
+                $matrixHtml .= '<td class="border border-light-border dark:border-dark-border bg-purple-50 dark:bg-purple-900/20 px-4 py-3 text-center text-light-text dark:text-dark-text font-mono font-semibold min-w-[60px]">' . $matrix[$row][$col] . '</td>';
             }
             $matrixHtml .= '</tr>';
         }
-        $matrixHtml .= '</tbody></table>';
+        $matrixHtml .= '</tbody></table></div>';
 
         $steps[] = [
             'html' => $matrixHtml,
@@ -323,19 +329,25 @@ class HillCipherService
         if (!$isEncrypt) {
             $invMatrix = $this->matrixInverse($matrix);
             $steps[] = [
-                'html' => '<p><strong>Step 2:</strong> Inverse Matrix (for decryption)</p>',
+                'html' => '<div class="p-4 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-700 rounded-lg mb-4">
+                            <p class="text-light-text dark:text-dark-text font-semibold">
+                                <strong>Step 2:</strong> Inverse Matrix (for decryption)
+                            </p>
+                          </div>',
                 'delay' => 500
             ];
 
-            $invMatrixHtml = '<table style="border-collapse: collapse; margin: 1rem 0;"><tbody>';
+            $invMatrixHtml = '<div class="flex justify-center mb-4">
+                              <table class="border-collapse bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-lg overflow-hidden">
+                                <tbody>';
             for ($row = 0; $row < $size; $row++) {
                 $invMatrixHtml .= '<tr>';
                 for ($col = 0; $col < $size; $col++) {
-                    $invMatrixHtml .= '<td style="border: 1px solid var(--border-color); padding: 0.5rem; text-align: center; width: 50px;">' . $invMatrix[$row][$col] . '</td>';
+                    $invMatrixHtml .= '<td class="border border-light-border dark:border-dark-border bg-orange-50 dark:bg-orange-900/20 px-4 py-3 text-center text-light-text dark:text-dark-text font-mono font-semibold min-w-[60px]">' . $invMatrix[$row][$col] . '</td>';
                 }
                 $invMatrixHtml .= '</tr>';
             }
-            $invMatrixHtml .= '</tbody></table>';
+            $invMatrixHtml .= '</tbody></table></div>';
 
             $steps[] = [
                 'html' => $invMatrixHtml,
@@ -350,8 +362,14 @@ class HillCipherService
         }
 
         $steps[] = [
-            'html' => '<p><strong>Step ' . ($isEncrypt ? '2' : '3') . ':</strong> Convert text to numbers: ' . implode(', ', $numbers) .
-                     (count($paddedNumbers) > count($numbers) ? ' (padded with X)' : '') . '</p>',
+            'html' => '<div class="p-3 bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-700 rounded-lg mb-3">
+                        <p class="text-light-text-secondary dark:text-dark-text-secondary">
+                            <strong>Step ' . ($isEncrypt ? '2' : '3') . ':</strong> Convert text to numbers:
+                            <span class="font-mono bg-indigo-100 dark:bg-indigo-800 px-2 py-1 rounded text-indigo-800 dark:text-indigo-200">' .
+                            implode(', ', $numbers) . '</span>' .
+                            (count($paddedNumbers) > count($numbers) ? ' <span class="text-amber-600 dark:text-amber-400">(padded with X)</span>' : '') . '
+                        </p>
+                      </div>',
             'delay' => 800
         ];
 
@@ -364,14 +382,27 @@ class HillCipherService
             $result = array_merge($result, $processed);
 
             $steps[] = [
-                'html' => '<p><strong>Block ' . (($i / $size) + 1) . ':</strong> [' . implode(', ', $block) . '] × Matrix = [' . implode(', ', $processed) . '] (mod 26)</p>',
+                'html' => '<div class="p-3 bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-700 rounded-lg mb-3">
+                            <p class="text-light-text-secondary dark:text-dark-text-secondary">
+                                <strong>Block ' . (($i / $size) + 1) . ':</strong>
+                                <span class="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">[' . implode(', ', $block) . ']</span>
+                                × Matrix =
+                                <span class="font-mono bg-teal-100 dark:bg-teal-800 px-2 py-1 rounded text-teal-800 dark:text-teal-200">[' . implode(', ', $processed) . ']</span>
+                                <span class="text-teal-600 dark:text-teal-400">(mod 26)</span>
+                            </p>
+                          </div>',
                 'delay' => 1200
             ];
         }
 
         $resultText = $this->numbersToText($result);
         $steps[] = [
-            'html' => '<p><strong>Result:</strong> ' . $resultText . '</p>',
+            'html' => '<div class="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg">
+                        <p class="text-light-text dark:text-dark-text font-bold text-lg">
+                            <strong>Final Result:</strong>
+                            <span class="font-mono bg-green-100 dark:bg-green-800 px-3 py-2 rounded text-green-800 dark:text-green-200">' . $resultText . '</span>
+                        </p>
+                      </div>',
             'delay' => 500
         ];
 
