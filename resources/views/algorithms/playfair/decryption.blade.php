@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Playfair Cipher - Decryption | CipherViz')
+@section('title', 'Decryption - Playfair Cipher')
 @section('page-title', 'Playfair Cipher')
 
 @section('content')

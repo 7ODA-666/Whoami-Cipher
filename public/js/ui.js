@@ -308,9 +308,37 @@ function initCopyButtons() {
 
   copyButtons.forEach(btn => {
     btn.addEventListener('click', async () => {
-      const outputField = btn.closest('.bg-gray-800')?.querySelector('textarea[readonly]') ||
-                         btn.parentElement?.previousElementSibling?.querySelector('textarea[readonly]');
-      if (outputField && outputField.value) {
+      // Look for the output field in the same container
+      // Try multiple approaches to find the textarea
+      let outputField = null;
+
+      // Approach 1: Look for readonly textarea in the same card container
+      const cardContainer = btn.closest('.bg-light-card, .bg-dark-card, .bg-gray-800');
+      if (cardContainer) {
+        outputField = cardContainer.querySelector('textarea[readonly]');
+      }
+
+      // Approach 2: Look for the previous sibling container
+      if (!outputField) {
+        const parentDiv = btn.parentElement;
+        if (parentDiv) {
+          const textareaContainer = parentDiv.previousElementSibling;
+          if (textareaContainer) {
+            outputField = textareaContainer.querySelector('textarea[readonly]');
+          }
+        }
+      }
+
+      // Approach 3: Look by common output field IDs
+      if (!outputField) {
+        const commonOutputIds = ['#output-text', '#plaintext-output', '#ciphertext-output'];
+        for (const id of commonOutputIds) {
+          outputField = document.querySelector(id);
+          if (outputField && outputField.value) break;
+        }
+      }
+
+      if (outputField && outputField.value.trim()) {
         try {
           await navigator.clipboard.writeText(outputField.value);
           showCopyNotification();
@@ -320,6 +348,8 @@ function initCopyButtons() {
           document.execCommand('copy');
           showCopyNotification();
         }
+      } else {
+        showCopyErrorNotification();
       }
     });
   });
@@ -354,6 +384,93 @@ function showCopyNotification() {
   }, 2000);
 }
 
+function showCopyErrorNotification() {
+  // Remove existing notification if any
+  const existing = document.querySelector('.copy-notification');
+  if (existing) {
+    existing.remove();
+  }
+
+  // Create error notification
+  const notification = document.createElement('div');
+  notification.className = 'copy-notification fixed bottom-8 right-8 bg-gradient-to-r from-red-600 to-orange-600 text-white px-6 py-3 rounded-lg shadow-2xl z-50 opacity-0 transform translate-y-4 transition-all duration-300';
+  notification.textContent = 'No content to copy!';
+  document.body.appendChild(notification);
+
+  // Show notification
+  setTimeout(() => {
+    notification.classList.remove('opacity-0', 'translate-y-4');
+    notification.classList.add('opacity-100', 'translate-y-0');
+  }, 10);
+
+  // Hide and remove notification after 2 seconds
+  setTimeout(() => {
+    notification.classList.remove('opacity-100', 'translate-y-0');
+    notification.classList.add('opacity-0', 'translate-y-4');
+    setTimeout(() => {
+      notification.remove();
+    }, 300);
+  }, 2000);
+}
+
+function showClearNotification(count) {
+  // Remove existing notification if any
+  const existing = document.querySelector('.clear-notification');
+  if (existing) {
+    existing.remove();
+  }
+
+  // Create success notification
+  const notification = document.createElement('div');
+  notification.className = 'clear-notification fixed bottom-8 right-8 bg-gradient-to-r from-green-600 to-blue-600 text-white px-6 py-3 rounded-lg shadow-2xl z-50 opacity-0 transform translate-y-4 transition-all duration-300';
+  notification.textContent = `Cleared ${count} field${count > 1 ? 's' : ''}!`;
+  document.body.appendChild(notification);
+
+  // Show notification
+  setTimeout(() => {
+    notification.classList.remove('opacity-0', 'translate-y-4');
+    notification.classList.add('opacity-100', 'translate-y-0');
+  }, 10);
+
+  // Hide and remove notification after 2 seconds
+  setTimeout(() => {
+    notification.classList.remove('opacity-100', 'translate-y-0');
+    notification.classList.add('opacity-0', 'translate-y-4');
+    setTimeout(() => {
+      notification.remove();
+    }, 300);
+  }, 2000);
+}
+
+function showClearErrorNotification() {
+  // Remove existing notification if any
+  const existing = document.querySelector('.clear-notification');
+  if (existing) {
+    existing.remove();
+  }
+
+  // Create error notification
+  const notification = document.createElement('div');
+  notification.className = 'clear-notification fixed bottom-8 right-8 bg-gradient-to-r from-orange-600 to-red-600 text-white px-6 py-3 rounded-lg shadow-2xl z-50 opacity-0 transform translate-y-4 transition-all duration-300';
+  notification.textContent = 'No fields to clear!';
+  document.body.appendChild(notification);
+
+  // Show notification
+  setTimeout(() => {
+    notification.classList.remove('opacity-0', 'translate-y-4');
+    notification.classList.add('opacity-100', 'translate-y-0');
+  }, 10);
+
+  // Hide and remove notification after 2 seconds
+  setTimeout(() => {
+    notification.classList.remove('opacity-100', 'translate-y-0');
+    notification.classList.add('opacity-0', 'translate-y-4');
+    setTimeout(() => {
+      notification.remove();
+    }, 300);
+  }, 2000);
+}
+
 // Clear All Fields
 function initClearButtons() {
   const clearButtons = document.querySelectorAll('.clear-btn');
@@ -369,17 +486,62 @@ function initClearButtons() {
       }
 
       if (container) {
-        // Clear all input fields (text, number, password, etc.)
-        const inputs = container.querySelectorAll('input, textarea');
+        // Clear all input fields (text, number, password, etc.) - be more explicit
+        const inputs = container.querySelectorAll('input[type="text"], input[type="number"], input[type="password"], input[type="email"], input:not([type]), textarea:not([readonly])');
+
+        let clearedCount = 0;
         inputs.forEach(input => {
+          // Skip checkboxes, radio buttons, disabled fields, and visualization toggle
           if (input.type !== 'checkbox' &&
               input.type !== 'radio' &&
+              input.type !== 'submit' &&
+              input.type !== 'button' &&
               !input.disabled &&
-              !input.readOnly &&
               !input.classList.contains('viz-toggle')) {
+            const oldValue = input.value;
             input.value = '';
+            // Trigger input event to notify any listeners
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+            if (oldValue) {
+              clearedCount++;
+            }
           }
         });
+
+        // Also clear readonly output fields (users want to clear results too)
+        const readonlyOutputs = container.querySelectorAll('textarea[readonly]');
+        readonlyOutputs.forEach(output => {
+          const oldValue = output.value;
+          output.value = '';
+          if (oldValue) {
+            clearedCount++;
+          }
+        });
+
+        // Also specifically target common field IDs used in the application (including readonly)
+        const specificFields = [
+          '#input-text', '#ciphertext-input', '#plaintext-output', '#output-text',
+          '#key-input', '#key-input-decrypt', '#key-input-encrypt'
+        ];
+
+        specificFields.forEach(fieldId => {
+          const field = container.querySelector(fieldId);
+          if (field && !field.disabled) {
+            const oldValue = field.value;
+            field.value = '';
+            field.dispatchEvent(new Event('input', { bubbles: true }));
+            if (oldValue) {
+              clearedCount++;
+            }
+          }
+        });
+
+        // Show notification if fields were cleared
+        if (clearedCount > 0) {
+          showClearNotification(clearedCount);
+        } else {
+          showClearErrorNotification();
+        }
 
         // Reset all select elements to their first option
         const selects = container.querySelectorAll('select');
@@ -395,8 +557,8 @@ function initClearButtons() {
         const vizContents = container.querySelectorAll('.visualization-content');
         vizContents.forEach(vizContent => {
           vizContent.innerHTML = '';
-          // Remove any dynamic classes that might have been added
-          vizContent.className = 'visualization-content min-h-[200px] p-4 bg-gray-900 rounded-lg border border-gray-700';
+          // Remove any dynamic classes that might have been added - use the correct Tailwind classes
+          vizContent.className = 'visualization-content min-h-[200px] p-4 bg-light-bg dark:bg-dark-bg rounded-lg border border-light-border dark:border-dark-border';
         });
 
         // Clear any dynamically generated matrix input containers (for Hill cipher)
@@ -436,9 +598,25 @@ function initClearButtons() {
 function initVisualizationToggle() {
   const vizToggles = document.querySelectorAll('.viz-toggle');
 
-  vizToggles.forEach(toggle => {
+  vizToggles.forEach((toggle) => {
+    // Set initial state based on checkbox state
+    const vizSection = toggle.closest('.bg-light-card, .bg-dark-card, .bg-gray-800');
+    const vizContent = vizSection?.querySelector('.visualization-content');
+
+    if (vizContent) {
+      // Set initial visibility based on checkbox state
+      if (toggle.checked) {
+        vizContent.classList.remove('hidden');
+        vizContent.classList.add('block');
+      } else {
+        vizContent.classList.remove('block');
+        vizContent.classList.add('hidden');
+      }
+    }
+
+    // Add change event listener
     toggle.addEventListener('change', (e) => {
-      const vizSection = toggle.closest('.bg-gray-800');
+      const vizSection = toggle.closest('.bg-light-card, .bg-dark-card, .bg-gray-800');
       const vizContent = vizSection?.querySelector('.visualization-content');
 
       if (vizContent) {

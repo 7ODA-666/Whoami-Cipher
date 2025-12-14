@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Row-Column Transposition - Decryption | CipherViz')
+@section('title', 'Decryption - Row-Column Transposition')
 @section('page-title', 'Row-Column Transposition Cipher')
 
 @section('content')

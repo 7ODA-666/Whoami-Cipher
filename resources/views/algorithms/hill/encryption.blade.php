@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Hill Cipher - Encryption | CipherViz')
+@section('title', 'Encryption - Hill Cipher')
 @section('page-title', 'Hill Cipher')
 
 @section('content')

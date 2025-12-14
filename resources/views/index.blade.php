@@ -1,12 +1,12 @@
 @extends('layouts.master')
 
-@section('title', 'CipherViz - Cryptography Education Platform')
+@section('title', 'Home - Whoami')
 
-@section('page-title', 'CipherViz')
+@section('page-title', 'Whoami Cipher')
 
 @section('content')
 <div class="text-center py-16 px-8 bg-gradient-to-br from-blue-600 via-purple-600 to-orange-600 rounded-xl mb-12 text-white shadow-2xl">
-    <h1 class="text-5xl font-bold mb-4">Welcome to CipherViz</h1>
+    <h1 class="text-5xl font-bold mb-4">Welcome to Master Whoami Cipher</h1>
     <p class="text-xl opacity-90">Explore and learn about classical cryptography algorithms through interactive visualization</p>
 </div>
 

@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Hill Cipher - Decryption | CipherViz')
+@section('title', 'Decryption - Hill Cipher')
 @section('page-title', 'Hill Cipher')
 
 @section('content')
@@ -56,15 +56,6 @@
                     <option value="2">2 × 2</option>
                     <option value="3">3 × 3</option>
                 </select>
-
-                <button
-                    onclick="generateHillKeyDecrypt()"
-                    class="px-6 py-2 bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-xl flex items-center gap-2 whitespace-nowrap"
-                    title="Generate a random valid Hill Cipher key matrix"
-                >
-                    <i class="fas fa-dice"></i>
-                    <span>Generate</span>
-                </button>
             </div>
 
             <!-- Matrix Input Container -->
@@ -72,7 +63,7 @@
                 <div class="text-center mb-3">
                     <span class="text-light-text-secondary dark:text-dark-text-secondary text-sm">Matrix Values (0-25)</span>
                 </div>
-                <div id="matrix-input-container-decrypt" class="matrix-grid size-2"></div>
+                <div id="matrix-input-container-decrypt" class="matrix-grid size2"></div>
             </div>
         </div>
     </div>
@@ -116,7 +107,7 @@ function initHillMatrix(sizeSelectId, containerId) {
     if (!sizeSelect || !container) return;
 
     function createMatrixInputs(size) {
-        container.className = `matrix-grid size-${size}`;
+        container.className = `matrix-grid size${size}`;
         container.innerHTML = '';
 
         for (let i = 0; i < size; i++) {

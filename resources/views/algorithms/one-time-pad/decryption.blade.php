@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'One-Time Pad - Decryption | CipherViz')
+@section('title', 'Decryption - One-Time Pad')
 @section('page-title', 'One-Time Pad (OTP)')
 
 @section('content')

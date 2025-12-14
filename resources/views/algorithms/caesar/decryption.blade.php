@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Caesar Cipher - Decryption | CipherViz')
+@section('title', 'Decryption - Caesar Cipher')
 @section('page-title', 'Caesar Cipher')
 
 @section('content')

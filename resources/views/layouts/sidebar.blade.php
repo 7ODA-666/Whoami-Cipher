@@ -2,7 +2,7 @@
 <aside id="sidebar" class="fixed left-0 top-0 h-screen w-72 bg-light-card dark:bg-dark-card border-r border-light-border dark:border-dark-border sidebar-transition z-50 overflow-y-auto overflow-x-hidden">
     <div class="p-6 border-b border-light-border dark:border-dark-border flex items-center justify-between">
         <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent sidebar-text-transition">
-            CipherViz
+            Whoami Cipher
         </h1>
         <button id="toggle-sidebar" class="text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text dark:hover:text-dark-text hover:bg-gray-100 dark:hover:bg-gray-700 p-2 rounded-lg transition-colors" aria-label="Toggle sidebar">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

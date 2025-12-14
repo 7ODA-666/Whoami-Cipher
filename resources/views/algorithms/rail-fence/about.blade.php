@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Rail Fence Cipher - About | CipherViz')
+@section('title', 'About - Rail Fence Cipher')
 @section('page-title', 'Rail Fence Cipher')
 
 @section('content')
