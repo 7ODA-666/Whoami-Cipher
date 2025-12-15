@@ -30,6 +30,12 @@
             </div>
             <span class="text-light-text dark:text-dark-text font-semibold">Show Visualization</span>
         </label>
+        <div class="flex items-center gap-3">
+            <label class="text-sm font-semibold text-light-text-secondary dark:text-dark-text-secondary">Speed:</label>
+            <input type="range" id="viz-speed-control" min="200" max="3000" value="1000" step="100"
+                   class="w-20 h-2 bg-light-border dark:bg-dark-border rounded-lg appearance-none cursor-pointer slider-thumb">
+            <span class="text-xs font-mono text-light-text-secondary dark:text-dark-text-secondary w-12" id="viz-speed-display">1000ms</span>
+        </div>
     </div>
     <div class="visualization-content min-h-[200px] p-4 bg-light-bg dark:bg-dark-bg rounded-lg border border-light-border dark:border-dark-border"></div>
 </div>

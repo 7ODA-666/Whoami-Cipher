@@ -713,3 +713,93 @@ table td {
   color: var(--text-primary) !important;
 }
 
+/* ===== MODERN RANGE SLIDER STYLES ===== */
+/* Speed control slider styling */
+input[type="range"].slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(to right, #3b82f6 0%, #3b82f6 50%, #e5e7eb 50%, #e5e7eb 100%);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.dark input[type="range"].slider-thumb {
+  background: linear-gradient(to right, #3b82f6 0%, #3b82f6 50%, #4b5563 50%, #4b5563 100%);
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+input[type="range"].slider-thumb::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: 2px solid #ffffff;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+input[type="range"].slider-thumb::-webkit-slider-thumb:hover {
+  background: #2563eb;
+  transform: scale(1.1);
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+}
+
+.dark input[type="range"].slider-thumb::-webkit-slider-thumb {
+  border: 2px solid #1e293b;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dark input[type="range"].slider-thumb::-webkit-slider-thumb:hover {
+  box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
+}
+
+/* Firefox */
+input[type="range"].slider-thumb::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #3b82f6;
+  border: 2px solid #ffffff;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+input[type="range"].slider-thumb::-moz-range-thumb:hover {
+  background: #2563eb;
+  transform: scale(1.1);
+}
+
+.dark input[type="range"].slider-thumb::-moz-range-thumb {
+  border: 2px solid #1e293b;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+input[type="range"].slider-thumb::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: #e5e7eb;
+}
+
+.dark input[type="range"].slider-thumb::-moz-range-track {
+  background: #4b5563;
+}
+
+/* Focus styles */
+input[type="range"].slider-thumb:focus {
+  outline: none;
+}
+
+input[type="range"].slider-thumb:focus::-webkit-slider-thumb {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+
+input[type="range"].slider-thumb:focus::-moz-range-thumb {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+}
+

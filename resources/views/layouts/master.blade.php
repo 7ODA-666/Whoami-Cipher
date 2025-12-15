@@ -65,6 +65,7 @@
     <script src="{{ asset('js/spa.js') }}"></script>
     <script src="{{ asset('js/visualization.js') }}"></script>
     <script src="{{ asset('js/crypto-ajax.js') }}"></script>
+    <script src="{{ asset('js/speed-control.js') }}"></script>
     @stack('scripts')
 </body>
 </html>

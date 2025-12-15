@@ -9,6 +9,28 @@ class VisualizationEngine {
     this.stepElements = [];
     this.isPlaying = false;
     this.speed = 1000; // milliseconds between steps
+
+    // Check for external speed control
+    this.externalSpeedControl = document.getElementById('viz-speed-control');
+    this.externalSpeedDisplay = document.getElementById('viz-speed-display');
+
+    if (this.externalSpeedControl) {
+      this.speed = parseInt(this.externalSpeedControl.value) || 1000;
+      this.setupExternalSpeedControl();
+    }
+  }
+
+  setupExternalSpeedControl() {
+    if (this.externalSpeedControl && this.externalSpeedDisplay) {
+      // Set initial display
+      this.externalSpeedDisplay.textContent = this.speed + 'ms';
+
+      // Add event listener for speed changes
+      this.externalSpeedControl.addEventListener('input', (e) => {
+        this.speed = parseInt(e.target.value);
+        this.externalSpeedDisplay.textContent = this.speed + 'ms';
+      });
+    }
   }
 
   render(steps, algorithmName) {
@@ -65,7 +87,9 @@ class VisualizationEngine {
   createControls() {
     const controls = document.createElement('div');
     controls.className = 'flex items-center gap-3 mb-4 p-3 bg-light-card dark:bg-dark-card rounded-lg border border-light-border dark:border-dark-border';
-    controls.innerHTML = `
+
+    // Build controls HTML - exclude speed control if external control exists
+    let controlsHTML = `
       <button id="viz-play-pause" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors text-sm font-semibold">
         <i class="fas fa-play mr-2"></i>Play
       </button>
@@ -78,13 +102,19 @@ class VisualizationEngine {
       <button id="viz-reset" class="px-4 py-2 bg-light-card dark:bg-dark-card hover:bg-gray-100 dark:hover:bg-gray-600 text-light-text-secondary dark:text-dark-text-secondary hover:text-light-text dark:hover:text-dark-text rounded-lg transition-colors text-sm font-semibold border border-light-border dark:border-dark-border">
         <i class="fas fa-redo mr-2"></i>Reset
       </button>
-      <div class="flex-1"></div>
+      <div class="flex-1"></div>`;
+
+    // Only add speed control if external control doesn't exist
+    if (!this.externalSpeedControl) {
+      controlsHTML += `
       <div class="flex items-center gap-2">
         <label class="text-xs text-light-text-secondary dark:text-dark-text-secondary">Speed:</label>
         <input type="range" id="viz-speed" min="200" max="3000" value="${this.speed}" step="100" class="w-24">
         <span class="text-xs text-light-text-secondary dark:text-dark-text-secondary font-mono w-12" id="viz-speed-value">${this.speed}ms</span>
-      </div>
-    `;
+      </div>`;
+    }
+
+    controls.innerHTML = controlsHTML;
     this.container.appendChild(controls);
 
     // Attach event listeners
@@ -92,10 +122,15 @@ class VisualizationEngine {
     document.getElementById('viz-prev').addEventListener('click', () => this.previousStep());
     document.getElementById('viz-next').addEventListener('click', () => this.nextStep());
     document.getElementById('viz-reset').addEventListener('click', () => this.reset());
-    document.getElementById('viz-speed').addEventListener('input', (e) => {
-      this.speed = parseInt(e.target.value);
-      document.getElementById('viz-speed-value').textContent = this.speed + 'ms';
-    });
+
+    // Only add speed control listener if internal control exists
+    const speedControl = document.getElementById('viz-speed');
+    if (speedControl) {
+      speedControl.addEventListener('input', (e) => {
+        this.speed = parseInt(e.target.value);
+        document.getElementById('viz-speed-value').textContent = this.speed + 'ms';
+      });
+    }
   }
 
   play() {
