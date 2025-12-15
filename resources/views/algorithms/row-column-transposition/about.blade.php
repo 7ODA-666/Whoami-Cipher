@@ -41,7 +41,7 @@
         <!-- Right Side - YouTube Video (~50% width) -->
         <div>
             <x-youtube-video
-                url="https://www.youtube.com/watch?v=XdUJQa6QQFQ"
+                url="https://youtu.be/l5ojQzfLSlY?si=m47XTbFZA6c3GZ8E"
                 title="Columnar Transposition Cipher Tutorial" />
         </div>
     </div>

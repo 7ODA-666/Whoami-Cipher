@@ -67,7 +67,7 @@
                 <i class="fas fa-random mr-2"></i>Generate
             </button>
         </div>
-        <p class="text-xs text-light-text-secondary dark:text-dark-text-secondary mt-2">Key must be exactly the same length as the plaintext for perfect security.</p>
+        <p class="text-xs text-red-500 dark:text-red-500 mt-2">Key must be exactly the same length as the plaintext for perfect security.</p>
     </div>
 
     <div class="bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-xl p-4 lg:p-6 shadow-xl">

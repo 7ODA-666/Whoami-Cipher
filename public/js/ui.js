@@ -14,9 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
 function initSidebar() {
   const sidebar = document.getElementById('sidebar');
   const toggleBtn = document.getElementById('toggle-sidebar');
+  const mobileToggleBtn = document.getElementById('mobile-sidebar-toggle');
   const mainContent = document.getElementById('main-content');
 
-  if (!sidebar || !toggleBtn) return;
+  if (!sidebar) return;
 
   function isMobile() {
     return window.innerWidth < 1024; // lg breakpoint
@@ -110,7 +111,13 @@ function initSidebar() {
     }
   }
 
-  toggleBtn.addEventListener('click', toggleSidebar);
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', toggleSidebar);
+  }
+
+  if (mobileToggleBtn) {
+    mobileToggleBtn.addEventListener('click', toggleSidebar);
+  }
 
   // Handle window resize - maintain appropriate state
   let resizeTimer;

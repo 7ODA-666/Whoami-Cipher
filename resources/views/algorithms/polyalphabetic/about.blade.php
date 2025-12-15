@@ -41,7 +41,7 @@
         <!-- Right Side - YouTube Video (~50% width) -->
         <div>
             <x-youtube-video
-                url="https://www.youtube.com/watch?v=9zASwVoshiM"
+                url="https://youtu.be/acnFEyCAwvg?si=oFYBdUwVJSrlArHM"
                 title="Vigenère Cipher: Polyalphabetic Encryption" />
         </div>
     </div>

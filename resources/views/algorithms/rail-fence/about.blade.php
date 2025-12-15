@@ -41,7 +41,7 @@
         <!-- Right Side - YouTube Video (~50% width) -->
         <div>
             <x-youtube-video
-                url="https://www.youtube.com/watch?v=FlIG3TvQCBQ"
+                url="https://youtu.be/EAR9GgQMy5s?si=6eXjhpvFNCXlwD7a"
                 title="Rail Fence Cipher: Zigzag Pattern Encryption" />
         </div>
     </div>

@@ -61,7 +61,7 @@
             class="w-full p-3 bg-light-bg dark:bg-dark-bg border border-light-border dark:border-dark-border rounded-lg text-light-text dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm lg:text-base"
             placeholder="Number of rails"
         />
-        <p class="text-xs text-light-text-secondary dark:text-dark-text-secondary mt-2">Same number of rails used for encryption.</p>
+        <p class="text-xs text-red-500 dark:text-red-500 mt-2">Same number of rails used for encryption.</p>
     </div>
 
     <div class="bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-xl p-4 lg:p-6 shadow-xl">

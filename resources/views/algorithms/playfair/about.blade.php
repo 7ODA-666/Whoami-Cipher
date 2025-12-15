@@ -41,7 +41,7 @@
         <!-- Right Side - YouTube Video (~50% width) -->
         <div>
             <x-youtube-video
-                url="https://www.youtube.com/watch?v=quKhvu1b1vs"
+                url="https://youtu.be/FoCQDGrIOKo?si=T-rjPypnZp7BD9It"
                 title="Playfair Cipher: How to Encrypt with 5x5 Grid" />
         </div>
     </div>

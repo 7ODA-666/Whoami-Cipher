@@ -60,7 +60,7 @@
                 placeholder="Enter keyword (letters only, no J)"
             />
         </div>
-        <p class="text-xs text-light-text-secondary dark:text-dark-text-secondary mt-2">Keyword should contain unique letters. J is replaced with I.</p>
+        <p class="text-xs text-red-500 dark:text-red-500 mt-2">Keyword should contain unique letters. J is replaced with I.</p>
     </div>
 
     <div class="bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-xl p-4 lg:p-6 shadow-xl">

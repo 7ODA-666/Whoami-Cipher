@@ -41,7 +41,7 @@
         <!-- Right Side - YouTube Video (~50% width) -->
         <div>
             <x-youtube-video
-                url="https://www.youtube.com/watch?v=FlIG3TvQCBQ"
+                url="https://youtu.be/3YMSTS3wnT4?si=vCuISQTyMxdl2CX6"
                 title="One-Time Pad: The Perfect Cipher" />
         </div>
     </div>

@@ -58,7 +58,7 @@
             class="w-full p-3 bg-light-bg dark:bg-dark-bg border border-light-border dark:border-dark-border rounded-lg text-light-text dark:text-dark-text focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm lg:text-base"
             placeholder="Enter keyword (letters) or numbers (e.g., 3 1 4 2)"
         />
-        <p class="text-xs text-light-text-secondary dark:text-dark-text-secondary mt-2">Keyword determines column order for transposition. Use letters (e.g., SECRET) or numbers separated by spaces/commas (e.g., 3 1 4 2).</p>
+        <p class="text-xs text-red-500 dark:text-red-500 mt-2">Keyword determines column order for transposition. Use letters (e.g., SECRET) or numbers separated by spaces/commas (e.g., 3 1 4 2).</p>
     </div>
 
     <div class="bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-xl p-4 lg:p-6 shadow-xl">
