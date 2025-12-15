@@ -22,17 +22,33 @@
 
 <!-- About Section -->
 <div class="bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-xl p-6 lg:p-8 shadow-xl">
-    <div class="flex items-center gap-4 mb-6">
-        <i class="fas fa-random text-4xl text-blue-400"></i>
-        <h2 class="text-3xl font-bold text-light-text dark:text-dark-text">Polyalphabetic (Vigenère) Cipher</h2>
+    <!-- Top Two-Column Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start mb-8 lg:mb-12">
+        <!-- Left Side - Title & Introduction (~50% width) -->
+        <div>
+            <div class="flex items-center gap-4 mb-6">
+                <i class="fas fa-random text-4xl text-blue-400"></i>
+                <h2 class="text-3xl font-bold text-light-text dark:text-dark-text">Polyalphabetic (Vigenère) Cipher</h2>
+            </div>
+            <p class="text-light-text-secondary dark:text-dark-text-secondary text-lg leading-relaxed mb-4">
+                The Polyalphabetic Cipher, most famously implemented as the Vigenère Cipher, uses multiple substitution alphabets based on a keyword. This makes it much more secure than simple monoalphabetic ciphers.
+            </p>
+            <p class="text-light-text-secondary dark:text-dark-text-secondary leading-relaxed">
+                Described by Giovan Battista Bellaso in 1553 and later misattributed to Blaise de Vigenère, this cipher resisted breaking for 300 years and was called "le chiffre indéchiffrable" (the indecipherable cipher).
+            </p>
+        </div>
+
+        <!-- Right Side - YouTube Video (~50% width) -->
+        <div>
+            <x-youtube-video
+                url="https://www.youtube.com/watch?v=9zASwVoshiM"
+                title="Vigenère Cipher: Polyalphabetic Encryption" />
+        </div>
     </div>
 
+    <!-- Continued Content - Full Width -->
     <div class="prose max-w-none">
-        <p class="text-light-text-secondary dark:text-dark-text-secondary text-lg leading-relaxed mb-6">
-            The Polyalphabetic Cipher, most famously implemented as the Vigenère Cipher, uses multiple substitution alphabets based on a keyword. This makes it much more secure than simple monoalphabetic ciphers.
-        </p>
-
-        <h3 class="text-2xl font-bold text-light-text dark:text-dark-text mt-8 mb-4">How It Works</h3>
+        <h3 class="text-2xl font-bold text-light-text dark:text-dark-text mb-4">How It Works</h3>
         <p class="text-light-text-secondary dark:text-dark-text-secondary mb-4">
             The cipher uses a keyword that is repeated to match the length of the plaintext. Each letter of the keyword determines which Caesar cipher shift to use for that position:
         </p>

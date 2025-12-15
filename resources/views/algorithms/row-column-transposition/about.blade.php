@@ -22,17 +22,33 @@
 
 <!-- About Section -->
 <div class="bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-xl p-6 lg:p-8 shadow-xl">
-    <div class="flex items-center gap-4 mb-6">
-        <i class="fas fa-columns text-4xl text-blue-400"></i>
-        <h2 class="text-3xl font-bold text-light-text dark:text-dark-text">Row-Column Transposition Cipher</h2>
+    <!-- Top Two-Column Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start mb-8 lg:mb-12">
+        <!-- Left Side - Title & Introduction (~50% width) -->
+        <div>
+            <div class="flex items-center gap-4 mb-6">
+                <i class="fas fa-columns text-4xl text-blue-400"></i>
+                <h2 class="text-3xl font-bold text-light-text dark:text-dark-text">Row-Column Transposition Cipher</h2>
+            </div>
+            <p class="text-light-text-secondary dark:text-dark-text-secondary text-lg leading-relaxed mb-4">
+                The Row-Column Transposition Cipher is a transposition cipher that writes the plaintext into a grid row by row, then reads it column by column based on a keyword's alphabetical order. It's more secure than simple transposition methods.
+            </p>
+            <p class="text-light-text-secondary dark:text-dark-text-secondary leading-relaxed">
+                Also known as Columnar Transposition, this cipher provides better security than the Rail Fence cipher by using a keyword to determine the column reading order.
+            </p>
+        </div>
+
+        <!-- Right Side - YouTube Video (~50% width) -->
+        <div>
+            <x-youtube-video
+                url="https://www.youtube.com/watch?v=XdUJQa6QQFQ"
+                title="Columnar Transposition Cipher Tutorial" />
+        </div>
     </div>
 
+    <!-- Continued Content - Full Width -->
     <div class="prose max-w-none">
-        <p class="text-light-text-secondary dark:text-dark-text-secondary text-lg leading-relaxed mb-6">
-            The Row-Column Transposition Cipher is a transposition cipher that writes the plaintext into a grid row by row, then reads it column by column based on a keyword's alphabetical order. It's more secure than simple transposition methods.
-        </p>
-
-        <h3 class="text-2xl font-bold text-light-text dark:text-dark-text mt-8 mb-4">How It Works</h3>
+        <h3 class="text-2xl font-bold text-light-text dark:text-dark-text mb-4">How It Works</h3>
         <p class="text-light-text-secondary dark:text-dark-text-secondary mb-4">
             The cipher arranges the plaintext in a rectangular grid and reorders columns based on a keyword:
         </p>

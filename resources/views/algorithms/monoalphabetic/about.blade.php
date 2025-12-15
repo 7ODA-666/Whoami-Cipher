@@ -22,17 +22,33 @@
 
 <!-- About Section -->
 <div class="bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-xl p-6 lg:p-8 shadow-xl">
-    <div class="flex items-center gap-4 mb-6">
-        <i class="fas fa-exchange-alt text-4xl text-blue-400"></i>
-        <h2 class="text-3xl font-bold text-light-text dark:text-dark-text">Monoalphabetic Cipher</h2>
+    <!-- Top Two-Column Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start mb-8 lg:mb-12">
+        <!-- Left Side - Title & Introduction (~50% width) -->
+        <div>
+            <div class="flex items-center gap-4 mb-6">
+                <i class="fas fa-exchange-alt text-4xl text-blue-400"></i>
+                <h2 class="text-3xl font-bold text-light-text dark:text-dark-text">Monoalphabetic Cipher</h2>
+            </div>
+            <p class="text-light-text-secondary dark:text-dark-text-secondary text-lg leading-relaxed mb-4">
+                A Monoalphabetic Cipher is a substitution cipher where each letter of the plaintext is replaced by a corresponding letter from a fixed substitution alphabet. Unlike the Caesar Cipher, the substitution alphabet can be any permutation of the 26 letters.
+            </p>
+            <p class="text-light-text-secondary dark:text-dark-text-secondary leading-relaxed">
+                This cipher provides greater security than Caesar ciphers by using a random key alphabet, making frequency analysis more challenging but still possible with sufficient ciphertext.
+            </p>
+        </div>
+
+        <!-- Right Side - YouTube Video (~50% width) -->
+        <div>
+            <x-youtube-video
+                url="https://youtu.be/Tu_f31Xb-pg?si=lVr2sFxz788GmKH2"
+                title="Monoalphabetic Substitution Cipher Explained" />
+        </div>
     </div>
 
+    <!-- Continued Content - Full Width -->
     <div class="prose max-w-none">
-        <p class="text-light-text-secondary dark:text-dark-text-secondary text-lg leading-relaxed mb-6">
-            A Monoalphabetic Cipher is a substitution cipher where each letter of the plaintext is replaced by a corresponding letter from a fixed substitution alphabet. Unlike the Caesar Cipher, the substitution alphabet can be any permutation of the 26 letters.
-        </p>
-
-        <h3 class="text-2xl font-bold text-light-text dark:text-dark-text mt-8 mb-4">How It Works</h3>
+        <h3 class="text-2xl font-bold text-light-text dark:text-dark-text mb-4">How It Works</h3>
         <p class="text-light-text-secondary dark:text-dark-text-secondary mb-4">
             The cipher uses a fixed mapping between the standard alphabet and a substitution alphabet. For example:
         </p>

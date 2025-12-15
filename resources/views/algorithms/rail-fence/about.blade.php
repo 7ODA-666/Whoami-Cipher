@@ -22,17 +22,33 @@
 
 <!-- About Section -->
 <div class="bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-xl p-6 lg:p-8 shadow-xl">
-    <div class="flex items-center gap-4 mb-6">
-        <i class="fas fa-wave-square text-4xl text-blue-400"></i>
-        <h2 class="text-3xl font-bold text-light-text dark:text-dark-text">Rail Fence Cipher</h2>
+    <!-- Top Two-Column Layout -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start mb-8 lg:mb-12">
+        <!-- Left Side - Title & Introduction (~50% width) -->
+        <div>
+            <div class="flex items-center gap-4 mb-6">
+                <i class="fas fa-wave-square text-4xl text-blue-400"></i>
+                <h2 class="text-3xl font-bold text-light-text dark:text-dark-text">Rail Fence Cipher</h2>
+            </div>
+            <p class="text-light-text-secondary dark:text-dark-text-secondary text-lg leading-relaxed mb-4">
+                The Rail Fence Cipher is a transposition cipher that writes the plaintext in a zigzag pattern along multiple "rails" and then reads it row by row to create the ciphertext. It's one of the simplest transposition ciphers.
+            </p>
+            <p class="text-light-text-secondary dark:text-dark-text-secondary leading-relaxed">
+                Also known as the Zigzag cipher, it rearranges the letters of the plaintext without substitution, making it different from the substitution ciphers we've seen before.
+            </p>
+        </div>
+
+        <!-- Right Side - YouTube Video (~50% width) -->
+        <div>
+            <x-youtube-video
+                url="https://www.youtube.com/watch?v=FlIG3TvQCBQ"
+                title="Rail Fence Cipher: Zigzag Pattern Encryption" />
+        </div>
     </div>
 
+    <!-- Continued Content - Full Width -->
     <div class="prose max-w-none">
-        <p class="text-light-text-secondary dark:text-dark-text-secondary text-lg leading-relaxed mb-6">
-            The Rail Fence Cipher is a transposition cipher that writes the plaintext in a zigzag pattern along multiple "rails" and then reads it row by row to create the ciphertext. It's one of the simplest transposition ciphers.
-        </p>
-
-        <h3 class="text-2xl font-bold text-light-text dark:text-dark-text mt-8 mb-4">How It Works</h3>
+        <h3 class="text-2xl font-bold text-light-text dark:text-dark-text mb-4">How It Works</h3>
         <p class="text-light-text-secondary dark:text-dark-text-secondary mb-4">
             The cipher arranges the plaintext in a zigzag pattern across multiple horizontal lines (rails), then reads the letters row by row:
         </p>
