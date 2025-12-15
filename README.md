@@ -79,7 +79,6 @@ This structure ensures clean code organization, maintainability, and scalability
 ## 🚀 Future Enhancements
 
 - Add more classical and modern cryptography algorithms
-- Dark / Light mode support
 - Performance optimizations
 - User authentication for saving user progress
 - Backend API documentation
