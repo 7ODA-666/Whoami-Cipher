@@ -60,31 +60,34 @@ class RowColumnTranspositionController extends Controller
             ], 422);
         }
 
-        // Check if key contains only alphabetic characters
-        if (!preg_match('/^[A-Za-z]+$/', $key)) {
+        // Use the service validation method to check both alphabetic and numeric keys
+        if (!$this->cipherService->validateKey($key)) {
             return response()->json([
                 'success' => false,
-                'error' => 'Key must contain only alphabetic characters.'
+                'error' => 'Key must contain only alphabetic characters (e.g., "SECRET") or numeric values separated by spaces/commas (e.g., "3 1 4 2").'
             ], 422);
         }
 
-        // Check minimum key length
-        if (strlen($key) < 2) {
-            return response()->json([
-                'success' => false,
-                'error' => 'Key must be at least 2 characters long for transposition.'
-            ], 422);
-        }
+        // For alphabetic keys, check minimum length and duplicates
+        if (preg_match('/^[A-Za-z]+$/', $key)) {
+            // Check minimum key length
+            if (strlen($key) < 2) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Key must be at least 2 characters long for transposition.'
+                ], 422);
+            }
 
-        // Check if key contains duplicate letters
-        $keyArray = str_split(strtoupper($key));
-        $uniqueLetters = array_unique($keyArray);
+            // Check if key contains duplicate letters
+            $keyArray = str_split(strtoupper($key));
+            $uniqueLetters = array_unique($keyArray);
 
-        if (count($uniqueLetters) !== count($keyArray)) {
-            return response()->json([
-                'success' => false,
-                'error' => 'Key must not contain duplicate letters.'
-            ], 422);
+            if (count($uniqueLetters) !== count($keyArray)) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Key must not contain duplicate letters.'
+                ], 422);
+            }
         }
 
         try {
@@ -134,31 +137,34 @@ class RowColumnTranspositionController extends Controller
             ], 422);
         }
 
-        // Check if key contains only alphabetic characters
-        if (!preg_match('/^[A-Za-z]+$/', $key)) {
+        // Use the service validation method to check both alphabetic and numeric keys
+        if (!$this->cipherService->validateKey($key)) {
             return response()->json([
                 'success' => false,
-                'error' => 'Key must contain only alphabetic characters.'
+                'error' => 'Key must contain only alphabetic characters (e.g., "SECRET") or numeric values separated by spaces/commas (e.g., "3 1 4 2").'
             ], 422);
         }
 
-        // Check minimum key length
-        if (strlen($key) < 2) {
-            return response()->json([
-                'success' => false,
-                'error' => 'Key must be at least 2 characters long for transposition.'
-            ], 422);
-        }
+        // For alphabetic keys, check minimum length and duplicates
+        if (preg_match('/^[A-Za-z]+$/', $key)) {
+            // Check minimum key length
+            if (strlen($key) < 2) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Key must be at least 2 characters long for transposition.'
+                ], 422);
+            }
 
-        // Check if key contains duplicate letters
-        $keyArray = str_split(strtoupper($key));
-        $uniqueLetters = array_unique($keyArray);
+            // Check if key contains duplicate letters
+            $keyArray = str_split(strtoupper($key));
+            $uniqueLetters = array_unique($keyArray);
 
-        if (count($uniqueLetters) !== count($keyArray)) {
-            return response()->json([
-                'success' => false,
-                'error' => 'Key must not contain duplicate letters.'
-            ], 422);
+            if (count($uniqueLetters) !== count($keyArray)) {
+                return response()->json([
+                    'success' => false,
+                    'error' => 'Key must not contain duplicate letters.'
+                ], 422);
+            }
         }
 
         try {

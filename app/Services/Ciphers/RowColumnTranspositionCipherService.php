@@ -11,33 +11,93 @@ class RowColumnTranspositionCipherService
 
     public function validateKey(string $key): bool
     {
-        return preg_match('/^[A-Za-z]+$/', $key) === 1 && strlen($key) > 0;
+        // Accept alphabetic keys (letters only) or numeric keys (numbers/spaces/commas)
+        $isAlphabetic = preg_match('/^[A-Za-z]+$/', $key) === 1;
+        $isNumeric = preg_match('/^[0-9\s,]+$/', $key) === 1;
+
+        if ($isNumeric) {
+            // For numeric keys, validate that we have valid numbers
+            $numbers = $this->parseNumericKey($key);
+            return count($numbers) > 0 && count(array_filter($numbers, 'is_numeric')) === count($numbers);
+        }
+
+        return $isAlphabetic && strlen($key) > 0;
+    }
+
+    /**
+     * Parse numeric key from string format (space or comma separated)
+     */
+    private function parseNumericKey(string $key): array
+    {
+        // Remove extra spaces and split by space or comma
+        $key = trim(preg_replace('/\s+/', ' ', $key));
+        $parts = preg_split('/[\s,]+/', $key);
+        return array_filter($parts, function($part) {
+            return is_numeric(trim($part));
+        });
+    }
+
+    /**
+     * Determine if key is numeric or alphabetic and return appropriate key length
+     */
+    private function getKeyLength(string $key): int
+    {
+        if (preg_match('/^[0-9\s,]+$/', $key)) {
+            return count($this->parseNumericKey($key));
+        }
+        return strlen($key);
     }
 
     private function getColumnOrder(string $key): array
     {
-        $upperKey = strtoupper($key);
-        $keyChars = [];
-        for ($i = 0; $i < strlen($upperKey); $i++) {
-            $keyChars[] = ['char' => $upperKey[$i], 'originalIndex' => $i];
-        }
+        // Check if key is numeric or alphabetic
+        if (preg_match('/^[0-9\s,]+$/', $key)) {
+            // Numeric key handling
+            $numbers = $this->parseNumericKey($key);
+            $keyItems = [];
 
-        usort($keyChars, function ($a, $b) {
-            if ($a['char'] !== $b['char']) {
-                return strcmp($a['char'], $b['char']);
+            foreach ($numbers as $index => $value) {
+                $keyItems[] = [
+                    'value' => (float)$value, // Use float for proper numeric comparison
+                    'originalIndex' => $index
+                ];
             }
-            return $a['originalIndex'] - $b['originalIndex'];
-        });
+
+            // Sort by numeric value, then by original index for stability
+            usort($keyItems, function ($a, $b) {
+                if ($a['value'] !== $b['value']) {
+                    return $a['value'] <=> $b['value']; // Ascending numeric order
+                }
+                return $a['originalIndex'] - $b['originalIndex'];
+            });
+        } else {
+            // Alphabetic key handling (existing logic)
+            $upperKey = strtoupper($key);
+            $keyItems = [];
+            for ($i = 0; $i < strlen($upperKey); $i++) {
+                $keyItems[] = [
+                    'value' => $upperKey[$i],
+                    'originalIndex' => $i
+                ];
+            }
+
+            usort($keyItems, function ($a, $b) {
+                if ($a['value'] !== $b['value']) {
+                    return strcmp($a['value'], $b['value']); // Alphabetical order
+                }
+                return $a['originalIndex'] - $b['originalIndex'];
+            });
+        }
 
         return array_map(function ($item) {
             return $item['originalIndex'];
-        }, $keyChars);
+        }, $keyItems);
     }
 
     public function encrypt(string $plaintext, string $key): string
     {
         $text = strtoupper(preg_replace('/\s+/', '', $plaintext));
-        $keyLength = strlen($key);
+        $keyLength = $this->getKeyLength($key);
         $numRows = (int) ceil(strlen($text) / $keyLength);
 
         // Create grid
@@ -71,7 +131,7 @@ class RowColumnTranspositionCipherService
     public function decrypt(string $ciphertext, string $key): string
     {
         $text = strtoupper(preg_replace('/\s+/', '', $ciphertext));
-        $keyLength = strlen($key);
+        $keyLength = $this->getKeyLength($key);
         $numRows = (int) ceil(strlen($text) / $keyLength);
 
         // Get column order
@@ -134,7 +194,7 @@ class RowColumnTranspositionCipherService
         ];
 
         if ($isEncrypt) {
-            $keyLength = strlen($key);
+            $keyLength = $this->getKeyLength($key);
             $numRows = (int) ceil(strlen($cleanText) / $keyLength);
 
             $steps[] = [
@@ -161,11 +221,22 @@ class RowColumnTranspositionCipherService
                 }
             }
 
-            // Display grid
+            // Display grid header based on key type
             $gridHtml = '<table style="border-collapse: collapse; margin: 1rem 0;"><thead><tr><th></th>';
-            for ($i = 0; $i < $keyLength; $i++) {
-                $gridHtml .= '<th style="border: 1px solid var(--border-color); padding: 0.5rem; background: var(--bg-secondary);">' . $upperKey[$i] . '</th>';
+
+            if (preg_match('/^[0-9\s,]+$/', $key)) {
+                // Numeric key
+                $numbers = $this->parseNumericKey($key);
+                for ($i = 0; $i < $keyLength; $i++) {
+                    $gridHtml .= '<th style="border: 1px solid var(--border-color); padding: 0.5rem; background: var(--bg-secondary);">' . $numbers[$i] . '</th>';
+                }
+            } else {
+                // Alphabetic key
+                for ($i = 0; $i < $keyLength; $i++) {
+                    $gridHtml .= '<th style="border: 1px solid var(--border-color); padding: 0.5rem; background: var(--bg-secondary);">' . $upperKey[$i] . '</th>';
+                }
             }
+
             $gridHtml .= '</tr></thead><tbody>';
             for ($row = 0; $row < $numRows; $row++) {
                 $gridHtml .= '<tr><td style="border: 1px solid var(--border-color); padding: 0.5rem; background: var(--bg-secondary); font-weight: bold;">Row ' . ($row + 1) . '</td>';
@@ -182,9 +253,18 @@ class RowColumnTranspositionCipherService
             ];
 
             $columnOrder = $this->getColumnOrder($key);
-            $orderText = implode(' → ', array_map(function ($i) use ($upperKey) {
-                return $upperKey[$i];
-            }, $columnOrder));
+
+            // Generate order text based on key type
+            if (preg_match('/^[0-9\s,]+$/', $key)) {
+                $numbers = $this->parseNumericKey($key);
+                $orderText = implode(' → ', array_map(function ($i) use ($numbers) {
+                    return $numbers[$i];
+                }, $columnOrder));
+            } else {
+                $orderText = implode(' → ', array_map(function ($i) use ($upperKey) {
+                    return $upperKey[$i];
+                }, $columnOrder));
+            }
 
             $steps[] = [
                 'html' => '<p><strong>Step 3:</strong> Column order based on keyword alphabetical order: ' . $orderText . '</p>',
@@ -209,13 +289,22 @@ class RowColumnTranspositionCipherService
             ];
         } else {
             // Decryption
-            $keyLength = strlen($key);
+            $keyLength = $this->getKeyLength($key);
             $numRows = (int) ceil(strlen($cleanText) / $keyLength);
 
             $columnOrder = $this->getColumnOrder($key);
-            $orderText = implode(' → ', array_map(function ($i) use ($upperKey) {
-                return $upperKey[$i];
-            }, $columnOrder));
+
+            // Generate order text based on key type
+            if (preg_match('/^[0-9\s,]+$/', $key)) {
+                $numbers = $this->parseNumericKey($key);
+                $orderText = implode(' → ', array_map(function ($i) use ($numbers) {
+                    return $numbers[$i];
+                }, $columnOrder));
+            } else {
+                $orderText = implode(' → ', array_map(function ($i) use ($upperKey) {
+                    return $upperKey[$i];
+                }, $columnOrder));
+            }
 
             $steps[] = [
                 'html' => '<p><strong>Step 2:</strong> Column order: ' . $orderText . '</p>',
@@ -238,10 +327,22 @@ class RowColumnTranspositionCipherService
                 }
             }
 
+            // Display grid header based on key type
             $gridHtml = '<table style="border-collapse: collapse; margin: 1rem 0;"><thead><tr><th></th>';
-            for ($i = 0; $i < $keyLength; $i++) {
-                $gridHtml .= '<th style="border: 1px solid var(--border-color); padding: 0.5rem; background: var(--bg-secondary);">' . $upperKey[$i] . '</th>';
+
+            if (preg_match('/^[0-9\s,]+$/', $key)) {
+                // Numeric key
+                $numbers = $this->parseNumericKey($key);
+                for ($i = 0; $i < $keyLength; $i++) {
+                    $gridHtml .= '<th style="border: 1px solid var(--border-color); padding: 0.5rem; background: var(--bg-secondary);">' . $numbers[$i] . '</th>';
+                }
+            } else {
+                // Alphabetic key
+                for ($i = 0; $i < $keyLength; $i++) {
+                    $gridHtml .= '<th style="border: 1px solid var(--border-color); padding: 0.5rem; background: var(--bg-secondary);">' . $upperKey[$i] . '</th>';
+                }
             }
+
             $gridHtml .= '</tr></thead><tbody>';
             for ($row = 0; $row < $numRows; $row++) {
                 $gridHtml .= '<tr><td style="border: 1px solid var(--border-color); padding: 0.5rem; background: var(--bg-secondary); font-weight: bold;">Row ' . ($row + 1) . '</td>';
