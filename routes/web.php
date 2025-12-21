@@ -100,3 +100,42 @@ Route::prefix('row-column-transposition')->name('row-column-transposition.')->gr
     Route::post('/decrypt', [RowColumnTranspositionController::class, 'processDecrypt'])->name('process.decrypt');
     Route::get('/about', [RowColumnTranspositionController::class, 'about'])->name('about');
 });
+
+
+
+
+Route::get('/usecase', function () {
+    return view('diagrams.usecase');
+});
+
+Route::get('/class', function () {
+    return view('diagrams.class');
+});
+
+Route::get('/sequence-search', function () {
+    return view('diagrams.sequence-search');
+});
+
+Route::get('/sequence-add', function () {
+    return view('diagrams.sequence-add');
+});
+
+Route::get('/sequence-checkout', function () {
+    return view('diagrams.sequence-checkout');
+});
+
+Route::get('/component', function () {
+    return view('diagrams.component');
+});
+
+Route::get('/deployment', function () {
+    return view('diagrams.deployment');
+});
+
+Route::get('/state-payment', function () {
+    return view('diagrams.state-payment');
+});
+
+Route::get('/state-order', function () {
+    return view('diagrams.state-order');
+});
