@@ -139,3 +139,8 @@ Route::get('/state-payment', function () {
 Route::get('/state-order', function () {
     return view('diagrams.state-order');
 });
+
+
+
+Route::view('database/erd', 'database.erd');
+Route::view('database/schema', 'database.schema');
