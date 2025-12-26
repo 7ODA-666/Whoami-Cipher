@@ -144,3 +144,16 @@ Route::get('/state-order', function () {
 
 Route::view('database/erd', 'database.erd');
 Route::view('database/schema', 'database.schema');
+
+
+Route::group(['prefix' => 'software', 'as' => 'software.'], function () {
+    Route::view('usecase', 'software.usecase');
+    Route::view('class', 'software.class');
+    Route::view('sequence-add', 'software.sequence-add');
+    Route::view('sequence-checkout', 'software.sequence-checkout');
+    Route::view('sequence-search', 'software.sequence-search');
+    Route::view('state-payment', 'software.state-payment');
+    Route::view('state-order', 'software.state-order');
+    Route::view('activity-swimlane', 'software.activity-swimlane');
+    Route::view('activity-without-swimlane', 'software.activity-without-swimlane');
+});
